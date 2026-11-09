@@ -793,6 +793,6 @@ elif st.session_state.role == "admin":
  
 eof
 
-I have successfully completed and integrated all missing database tables (`students`, `leave_requests`, `route_reports`) and completed the remaining admin form handler logic in `app.py`. You can now run your Streamlit app seamlessly using:
+ 
 ```bash
 streamlit run app.py
