@@ -27,9 +27,8 @@ conn = sqlite3.connect(str(DB_PATH), check_same_thread=False, timeout=30)
 # ==========================================================
 # 3. DARK LUXURY THEME (works on phone light/dark mode too)
 # ==========================================================
-st.markdown("""
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+_RAW_CSS = """
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 :root, html, body {
     color-scheme: dark !important;
 }
@@ -381,8 +380,11 @@ input::placeholder, textarea::placeholder {
 iframe {
     color-scheme: normal;
 }
-</style>
-""", unsafe_allow_html=True)
+"""
+# Remove blank lines / indentation so Streamlit's markdown parser can never
+# break out of the <style> block and print the CSS as visible text.
+_CSS = "\n".join(line.strip() for line in _RAW_CSS.splitlines() if line.strip())
+st.markdown("<style>" + _CSS + "</style>", unsafe_allow_html=True)
 
 # ==========================================================
 # 4. CREDENTIALS (40 Parents + Admin)
