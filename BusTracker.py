@@ -746,7 +746,7 @@ elif st.session_state.role == "admin":
 
                 if bus_no not in st.session_state.eta_by_bus:
                     st.session_state.eta_by_bus[bus_no] = random.randint(5, 20)
-                st.info(f"ETA: {st.session_state rep.eta_by_bus[bus_no]} minutes")
+                st.info(f"ETA: {st.session_state.eta_by_bus[bus_no]} minutes")
 
                 m = folium.Map(location=[lat, lon], zoom_start=14)
                 folium.Marker(
