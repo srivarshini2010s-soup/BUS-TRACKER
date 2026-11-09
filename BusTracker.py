@@ -25,7 +25,7 @@ DB_PATH = Path(__file__).resolve().parent / "bus_tracking.db"
 conn = sqlite3.connect(str(DB_PATH), check_same_thread=False)
 
 # ==========================================================
-# 3. DARK LUXURY THEME
+# 3. THEME (Blue boxes for clear visibility)
 # ==========================================================
 st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -44,11 +44,12 @@ h1, h2, h3, h4 {
     font-family: 'Playfair Display', serif !important;
     font-weight: 700 !important;
     color: #F5F5F3 !important;
-    letter-spacing: 0.3px;
 }
 p, label, span, li, .stMarkdown, .stCaption {
     color: #F5F5F3 !important;
 }
+
+/* Sidebar */
 section[data-testid="stSidebar"] {
     background-color: #0F382E !important;
 }
@@ -62,6 +63,8 @@ section[data-testid="stSidebar"] .stButton > button {
     font-weight: 700 !important;
     border: none !important;
 }
+
+/* Metrics */
 div[data-testid="stMetric"] {
     background: #0F382E;
     border: 1px solid #D4AF37;
@@ -76,6 +79,8 @@ div[data-testid="stMetric"] [data-testid="stMetricValue"] {
     color: #F5F5F3 !important;
     font-weight: 700 !important;
 }
+
+/* Buttons */
 .stButton > button,
 .stFormSubmitButton > button {
     background: #D4AF37 !important;
@@ -90,64 +95,73 @@ div[data-testid="stMetric"] [data-testid="stMetricValue"] {
     background: #E8C547 !important;
     color: #0B1312 !important;
 }
+
+/* ========== BLUE INPUT BOXES (fixes white text issue) ========== */
 input, textarea,
 .stTextInput input,
 .stTextArea textarea,
-.stNumberInput input {
-    background-color: #0F382E !important;
-    color: #F5F5F3 !important;
+.stNumberInput input,
+[data-testid="stDateInput"] input {
+    background-color: #1E3A5F !important;   /* Blue */
+    color: #FFFFFF !important;
     border-radius: 10px !important;
-    border: 1px solid #D4AF37 !important;
+    border: 1px solid #3B82F6 !important;
 }
+
+/* Password eye icon */
 [data-testid="stTextInput"] button,
 div[data-baseweb="input"] button {
-    background-color: #0F382E !important;
-    color: #D4AF37 !important;
+    background-color: #1E3A5F !important;
+    color: #93C5FD !important;
     border: none !important;
 }
 [data-testid="stTextInput"] button svg,
 div[data-baseweb="input"] button svg {
-    fill: #D4AF37 !important;
-    color: #D4AF37 !important;
+    fill: #93C5FD !important;
+    color: #93C5FD !important;
 }
+
+/* Date input */
 [data-testid="stDateInput"] input,
 [data-testid="stDateInput"] div[data-baseweb="input"] {
-    background-color: #0F382E !important;
-    color: #F5F5F3 !important;
-    border: 1px solid #D4AF37 !important;
+    background-color: #1E3A5F !important;
+    color: #FFFFFF !important;
+    border: 1px solid #3B82F6 !important;
     border-radius: 10px !important;
 }
 [data-testid="stDateInput"] svg {
-    fill: #D4AF37 !important;
-    color: #D4AF37 !important;
+    fill: #93C5FD !important;
 }
+
+/* Number input buttons */
 [data-testid="stNumberInput"] button {
-    background-color: #0F382E !important;
-    color: #D4AF37 !important;
-    border: 1px solid #D4AF37 !important;
+    background-color: #1E3A5F !important;
+    color: #93C5FD !important;
+    border: 1px solid #3B82F6 !important;
 }
-div[data-baseweb="select"] {
-    background-color: #0F382E !important;
-}
+
+/* Selectbox */
 div[data-baseweb="select"] > div {
-    background-color: #0F382E !important;
-    color: #F5F5F3 !important;
-    border: 1px solid #D4AF37 !important;
+    background-color: #1E3A5F !important;
+    color: #FFFFFF !important;
+    border: 1px solid #3B82F6 !important;
 }
 div[data-baseweb="select"] * {
-    color: #F5F5F3 !important;
+    color: #FFFFFF !important;
 }
 ul[data-baseweb="menu"] {
-    background-color: #0F382E !important;
+    background-color: #1E3A5F !important;
 }
 ul[data-baseweb="menu"] li,
 ul[data-baseweb="menu"] li * {
-    background-color: #0F382E !important;
-    color: #F5F5F3 !important;
+    background-color: #1E3A5F !important;
+    color: #FFFFFF !important;
 }
 ul[data-baseweb="menu"] li:hover {
-    background-color: #1A4A3C !important;
+    background-color: #2563EB !important;
 }
+
+/* Labels */
 [data-testid="stTextInput"] label,
 [data-testid="stTextArea"] label,
 [data-testid="stNumberInput"] label,
@@ -157,41 +171,44 @@ ul[data-baseweb="menu"] li:hover {
     color: #D4AF37 !important;
     font-weight: 600 !important;
 }
+
+/* Tabs */
 [data-testid="stTabs"] button {
     color: #F5F5F3 !important;
     font-weight: 600 !important;
 }
+
+/* Dataframe / Leave History */
 [data-testid="stDataFrame"],
 [data-testid="stDataFrame"] > div,
 [data-testid="stDataFrame"] table,
 [data-testid="stDataFrame"] th,
 [data-testid="stDataFrame"] td {
-    background-color: #0F382E !important;
-    color: #F5F5F3 !important;
-    border-color: #1A4A3C !important;
+    background-color: #1E3A5F !important;
+    color: #FFFFFF !important;
+    border-color: #3B82F6 !important;
 }
 [data-testid="stDataFrame"] th {
-    color: #D4AF37 !important;
+    color: #93C5FD !important;
     font-weight: 600 !important;
 }
+
+/* Placeholder */
 ::placeholder {
-    color: #A0A09E !important;
-    opacity: 1 !important;
+    color: #93C5FD !important;
+    opacity: 0.8 !important;
 }
 input::placeholder,
 textarea::placeholder {
-    color: #A0A09E !important;
+    color: #93C5FD !important;
 }
+
+/* Alerts */
 div[data-testid="stAlert"] {
     border-radius: 12px;
-    color: #F5F5F3 !important;
 }
-div[data-testid="stAlert"] * {
-    color: inherit !important;
-}
-.stRadio label {
-    color: #F5F5F3 !important;
-}
+
+/* Login card */
 .login-card {
     background: #0F382E;
     border-radius: 20px;
@@ -215,7 +232,6 @@ div[data-testid="stAlert"] * {
     font-weight: 500 !important;
     font-size: 0.95rem;
     margin-bottom: 28px;
-    opacity: 0.9;
 }
 hr {
     border-color: #1A4A3C;
@@ -227,9 +243,6 @@ hr {
     }
     .main-title {
         font-size: 1.5rem !important;
-    }
-    div[data-testid="stMetric"] {
-        padding: 12px;
     }
 }
 </style>
@@ -245,7 +258,7 @@ USERS = {
     "admin": {"password": _h("Admin@2015"), "role": "admin"},
     "vijay.sethupathi":   {"password": _h("Vijay@2017"),   "role": "parent"},
     "nayanthara.nair":    {"password": _h("Nayan@2018"),    "role": "parent"},
-    "suriya.sivakumar":   {"password": _h("Suriya@2016"),   "role": "parent"},
+    "suriya.sivakumar":   {"password": _h("S repuriya@2016"),   "role": "parent"},
     "keerthy.suresh":     {"password": _h("Keerthy@2019"),  "role": "parent"},
     "dhanush.r":          {"password": _h("Dhanush@2017"),  "role": "parent"},
     "sai.pallavi":        {"password": _h("Sai@2020"),      "role": "parent"},
@@ -302,14 +315,6 @@ for key, value in defaults.items():
 # ==========================================================
 # 6. DATABASE TABLES
 # ==========================================================
-try:
-    b_cols = [r[1] for r in conn.execute("PRAGMA table_info(buses)").fetchall()]
-    if len(b_cols) > 0 and len(b_cols) != 8:
-        conn.execute("DROP TABLE buses")
-        conn.commit()
-except Exception:
-    pass
-
 conn.execute("""
 CREATE TABLE IF NOT EXISTS buses (
     bus_no TEXT PRIMARY KEY,
@@ -358,25 +363,29 @@ CREATE TABLE IF NOT EXISTS route_reports (
 conn.commit()
 
 # ==========================================================
-# 7. SEED DATA (clean route names)
+# 7. FORCE UPDATE ROUTE NAMES + SEED DATA
 # ==========================================================
 def seed_data():
+    # Clear old bus data so new names are applied
+    conn.execute("DELETE FROM buses")
+    conn.commit()
+
     buses = [
-        ("TN09AB1001", "Murugan S",     "R-01", "Tambaram Route",      12.9249, 80.1000, 32, "Moving"),
-        ("TN09CD1002", "Selvam K",      "R-02", "Chromepet Route",     12.9516, 80.1462, 28, "Moving"),
-        ("TN09EF1003", "Ravi Chandran", "R-03", "Pallavaram Route",    12.9675, 80.1491,  0, "Stopped"),
-        ("TN09GH1004", "Anand Babu",    "R-04", "Selaiyur Route",      12.9172, 80.1320, 35, "Moving"),
-        ("TN09IJ1005", "Karthikeyan M", "R-05", "Medavakkam Route",    12.9200, 80.1900, 30, "Moving"),
-        ("TN09KL1006", "Senthil Kumar", "R-06", "Sholinganallur Route",12.9000, 80.2270, 22, "Moving"),
-        ("TN09MN1007", "Prabhu D",      "R-07", "Velachery Route",     12.9750, 80.2200,  0, "Stopped"),
-        ("TN09OP1008", "Ganesh R",      "R-08", "Guindy Route",        13.0100, 80.2100, 27, "Moving"),
-        ("TN09QR1009", "Vignesh P",     "R-09", "Adyar Route",         13.0060, 80.2570, 25, "Moving"),
-        ("TN09ST1010", "Muthuvel A",    "R-10", "T Nagar Route",       13.0400, 80.2340, 18, "Moving"),
-        ("TN09UV1011", "Suresh Babu",   "R-11", "Anna Nagar Route",    13.0850, 80.2100,  0, "Stopped"),
-        ("TN09WX1012", "Balaji N",      "R-12", "Porur Route",         13.0380, 80.1560, 33, "Moving"),
+        ("TN09AB1001", "Murugan S",     "R-01", "Tambaram Route",       12.9249, 80.1000, 32, "Moving"),
+        ("TN09CD1002", "Selvam K",      "R-02", "Chromepet Route",      12.9516, 80.1462, 28, "Moving"),
+        ("TN09EF1003", "Ravi Chandran", "R-03", "Pallavaram Route",     12.9675, 80.1491,  0, "Stopped"),
+        ("TN09GH1004", "Anand Babu",    "R-04", "Selaiyur Route",       12.9172, 80.1320, 35, "Moving"),
+        ("TN09IJ1005", "Karthikeyan M", "R-05", "Medavakkam Route",     12.9200, 80.1900, 30, "Moving"),
+        ("TN09KL1006", "Senthil Kumar", "R-06", "Sholinganallur Route", 12.9000, 80.2270, 22, "Moving"),
+        ("TN09MN1007", "Prabhu D",      "R-07", "Velachery Route",      12.9750, 80.2200,  0, "Stopped"),
+        ("TN09OP1008", "Ganesh R",      "R-08", "Guindy Route",         13.0100, 80.2100, 27, "Moving"),
+        ("TN09QR1009", "Vignesh P",     "R-09", "Adyar Route",          13.0060, 80.2570, 25, "Moving"),
+        ("TN09ST1010", "Muthuvel A",    "R-10", "T Nagar Route",        13.0400, 80.2340, 18, "Moving"),
+        ("TN09UV1011", "Suresh Babu",   "R-11", "Anna Nagar Route",     13.0850, 80.2100,  0, "Stopped"),
+        ("TN09WX1012", "Balaji N",      "R-12", "Porur Route",          13.0380, 80.1560, 33, "Moving"),
     ]
     for b in buses:
-        conn.execute("INSERT OR IGNORE INTO buses VALUES (?,?,?,?,?,?,?,?)", b)
+        conn.execute("INSERT OR REPLACE INTO buses VALUES (?,?,?,?,?,?,?,?)", b)
 
     students = [
         ("1001", "Aadhya Sethupathi",  "TN09AB1001", "Tambaram",       "vijay.sethupathi", "Class 5"),
@@ -601,7 +610,7 @@ if st.session_state.role == "parent":
                     st.warning("Please describe the issue.")
                 else:
                     conn.execute("""
-                        INSERT INTO route INTO route_reports
+                        INSERT INTO route_reports
                         (admission_no, student_name, bus_no, description, parent_username, report_status)
                         VALUES (?, ?, ?, ?, ?, ?)
                     """, (admission, student_name, bus_no, route_description.strip(),
@@ -737,7 +746,7 @@ elif st.session_state.role == "admin":
 
                 if bus_no not in st.session_state.eta_by_bus:
                     st.session_state.eta_by_bus[bus_no] = random.randint(5, 20)
-                st.info(f"ETA: {st.session_state.eta_by_bus[bus_no]} minutes")
+                st.info(f"ETA: {st.session_state rep.eta_by_bus[bus_no]} minutes")
 
                 m = folium.Map(location=[lat, lon], zoom_start=14)
                 folium.Marker(
