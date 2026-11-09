@@ -794,5 +794,5 @@ elif st.session_state.role == "admin":
 eof
 
  
-```bash
+
 streamlit run app.py
