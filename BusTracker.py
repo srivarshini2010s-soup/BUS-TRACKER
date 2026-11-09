@@ -22,151 +22,223 @@ st.set_page_config(
 # 2. DATABASE
 # ==========================================================
 DB_PATH = Path(__file__).resolve().parent / "bus_tracking.db"
-conn = sqlite3.connect(str(DB_PATH), check_same_thread=False)
+conn = sqlite3.connect(str(DB_PATH), check_same_thread=False, timeout=30)
 
 # ==========================================================
-# 3. WARM LINEN THEME
+# 3. DARK LUXURY THEME (works on phone light/dark mode too)
 # ==========================================================
-st.markdown("""
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+_RAW_CSS = """
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+:root, html, body {
+    color-scheme: dark !important;
+}
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif !important;
+    background-color: #0B1312 !important;
+    color: #F5F5F3 !important;
 }
-
-.stApp {
-    background-color: #FAF8F2 !important;
-    color: #3D3226 !important;
+.stApp,
+[data-testid="stApp"],
+[data-testid="stAppViewContainer"],
+[data-testid="stMain"],
+[data-testid="stMainBlockContainer"],
+.main, .block-container {
+    background-color: #0B1312 !important;
+    color: #F5F5F3 !important;
 }
-
-[data-testid="stHeader"] {
-    background: #FAF8F2 !important;
+[data-testid="stHeader"],
+[data-testid="stToolbar"],
+[data-testid="stBottom"],
+[data-testid="stBottomBlockContainer"] {
+    background: #0B1312 !important;
+    color: #F5F5F3 !important;
 }
-
-/* Headings */
+[data-testid="stHeader"] button,
+[data-testid="stHeader"] svg,
+[data-testid="stSidebarCollapseButton"] button,
+[data-testid="stExpandSidebarButton"] button,
+[data-testid="stSidebarCollapsedControl"] button {
+    color: #F5F5F3 !important;
+    fill: #F5F5F3 !important;
+}
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif !important;
     font-weight: 700 !important;
-    color: #3D3226 !important;
+    color: #F5F5F3 !important;
     letter-spacing: 0.3px;
 }
-
-/* All text */
-p, label, span, li, .stMarkdown, .stCaption, .stText,
-div[data-testid="stMarkdownContainer"] p,
-div[data-testid="stMarkdownContainer"] span,
-div[data-testid="stMarkdownContainer"] li {
-    color: #3D3226 !important;
+p, label, span, li, div, small,
+.stMarkdown, .stCaption, [data-testid="stCaptionContainer"],
+[data-testid="stMarkdownContainer"] {
+    color: #F5F5F3 !important;
 }
-
-/* Sidebar */
-section[data-testid="stSidebar"] {
-    background-color: #F7F4EE !important;
+section[data-testid="stSidebar"],
+section[data-testid="stSidebar"] > div,
+[data-testid="stSidebarContent"] {
+    background-color: #0F382E !important;
 }
 section[data-testid="stSidebar"] * {
-    color: #3D3226 !important;
+    color: #F5F5F3 !important;
 }
 section[data-testid="stSidebar"] .stButton > button {
-    background: #E8C9A0 !important;
-    color: #3D3226 !important;
+    background: #D4AF37 !important;
+    color: #0B1312 !important;
     border-radius: 10px !important;
     font-weight: 700 !important;
     border: none !important;
 }
-
-/* Metrics */
-div[data-testid="stMetric"] {
-    background: #FFF5D7 !important;
-    border: 1px solid #E8C9A0 !important;
-    border-radius: 14px !important;
-    padding: 16px !important;
+section[data-testid="stSidebar"] .stButton > button * {
+    color: #0B1312 !important;
 }
-div[data-testid="stMetric"] label {
-    color: #8B6F47 !important;
+div[data-testid="stMetric"] {
+    background: #0F382E !important;
+    border: 1px solid #D4AF37;
+    border-radius: 14px;
+    padding: 16px;
+}
+div[data-testid="stMetric"] label,
+div[data-testid="stMetric"] label * {
+    color: #D4AF37 !important;
     font-weight: 600 !important;
 }
-div[data-testid="stMetric"] [data-testid="stMetricValue"] {
-    color: #3D3226 !important;
+div[data-testid="stMetric"] [data-testid="stMetricValue"],
+div[data-testid="stMetric"] [data-testid="stMetricValue"] * {
+    color: #F5F5F3 !important;
     font-weight: 700 !important;
 }
-
-/* Buttons */
 .stButton > button,
-.stFormSubmitButton > button {
-    background: #E8C9A0 !important;
-    color: #3D3226 !important;
+.stFormSubmitButton > button,
+[data-testid="stBaseButton-secondary"],
+[data-testid="stBaseButton-secondaryFormSubmit"],
+[data-testid="stBaseButton-primary"],
+[data-testid="stBaseButton-primaryFormSubmit"] {
+    background: #D4AF37 !important;
+    color: #0B1312 !important;
     border: none !important;
     border-radius: 10px !important;
     font-weight: 700 !important;
     padding: 10px 20px !important;
 }
+.stButton > button *,
+.stFormSubmitButton > button * {
+    color: #0B1312 !important;
+}
 .stButton > button:hover,
 .stFormSubmitButton > button:hover {
-    background: #D4B48C !important;
-    color: #3D3226 !important;
+    background: #E8C547 !important;
+    color: #0B1312 !important;
 }
-
-/* Inputs & Text Areas */
 input, textarea,
-.stTextInput input,
-.stTextArea textarea,
-.stNumberInput input {
-    background-color: #FFF5D7 !important;
-    color: #3D3226 !important;
+.stTextInput input, .stTextArea textarea, .stNumberInput input, .stDateInput input,
+[data-baseweb="input"], [data-baseweb="input"] > div,
+[data-baseweb="textarea"], [data-baseweb="textarea"] > div,
+[data-baseweb="base-input"] {
+    background-color: #0F382E !important;
+    color: #F5F5F3 !important;
+    -webkit-text-fill-color: #F5F5F3 !important;
+    caret-color: #F5F5F3 !important;
     border-radius: 10px !important;
-    border: 1px solid #E8C9A0 !important;
 }
-
-/* Select boxes */
-div[data-baseweb="select"] {
-    background-color: #FFF5D7 !important;
+input, textarea {
+    border: 1px solid #D4AF37 !important;
 }
+input::placeholder, textarea::placeholder {
+    color: #B9C4BF !important;
+    -webkit-text-fill-color: #B9C4BF !important;
+    opacity: 1 !important;
+}
+[data-testid="stNumberInput"] button {
+    background-color: #0F382E !important;
+    color: #F5F5F3 !important;
+}
+div[data-baseweb="select"],
 div[data-baseweb="select"] > div {
-    background-color: #FFF5D7 !important;
-    color: #3D3226 !important;
+    background-color: #0F382E !important;
+    color: #F5F5F3 !important;
 }
 div[data-baseweb="select"] * {
-    color: #3D3226 !important;
+    color: #F5F5F3 !important;
+    -webkit-text-fill-color: #F5F5F3 !important;
 }
+div[data-baseweb="select"] svg {
+    fill: #F5F5F3 !important;
+}
+div[data-baseweb="popover"],
+div[data-baseweb="popover"] > div,
+div[data-baseweb="popover"] ul,
+div[data-baseweb="popover"] [role="listbox"],
+div[data-baseweb="popover"] [role="option"],
+div[data-baseweb="popover"] li,
 ul[data-baseweb="menu"] {
-    background-color: #FFF5D7 !important;
+    background-color: #0F382E !important;
+    color: #F5F5F3 !important;
 }
+div[data-baseweb="popover"] *,
 ul[data-baseweb="menu"] li,
 ul[data-baseweb="menu"] li * {
-    background-color: #FFF5D7 !important;
-    color: #3D3226 !important;
+    color: #F5F5F3 !important;
 }
+div[data-baseweb="popover"] [role="option"]:hover,
+div[data-baseweb="popover"] li:hover,
 ul[data-baseweb="menu"] li:hover {
-    background-color: #F7F4EE !important;
+    background-color: #1A4A3C !important;
 }
-
-/* Labels */
+div[data-baseweb="calendar"],
+div[data-baseweb="calendar"] * {
+    background-color: #0F382E !important;
+    color: #F5F5F3 !important;
+}
+div[data-baseweb="calendar"] [aria-selected="true"],
+div[data-baseweb="calendar"] [aria-selected="true"] * {
+    background-color: #D4AF37 !important;
+    color: #0B1312 !important;
+}
 [data-testid="stTextInput"] label,
 [data-testid="stTextArea"] label,
 [data-testid="stNumberInput"] label,
 [data-testid="stSelectbox"] label,
 [data-testid="stDateInput"] label,
-[data-testid="stRadio"] label {
-    color: #8B6F47 !important;
+[data-testid="stTextInput"] label *,
+[data-testid="stTextArea"] label *,
+[data-testid="stNumberInput"] label *,
+[data-testid="stSelectbox"] label *,
+[data-testid="stDateInput"] label * {
+    color: #D4AF37 !important;
     font-weight: 600 !important;
 }
-
-/* Tabs */
-[data-testid="stTabs"] button {
-    color: #3D3226 !important;
+[data-testid="stTabs"] button,
+[data-testid="stTabs"] button * {
+    color: #F5F5F3 !important;
     font-weight: 600 !important;
+    background: transparent !important;
 }
-[data-testid="stTabs"] button[aria-selected="true"] {
-    color: #8B6F47 !important;
+[data-testid="stTabs"] [role="tablist"] {
+    border-bottom: 1px solid #1A4A3C;
 }
-
-/* Login card */
+[data-testid="stForm"] {
+    background-color: #0F382E !important;
+    border: 1px solid #D4AF37 !important;
+    border-radius: 14px !important;
+}
+[data-testid="stExpander"],
+[data-testid="stExpander"] details,
+[data-testid="stExpander"] summary,
+[data-testid="stExpanderDetails"] {
+    background-color: #0F382E !important;
+    color: #F5F5F3 !important;
+    border-color: #D4AF37 !important;
+    border-radius: 12px !important;
+}
+[data-testid="stExpander"] summary *,
+[data-testid="stExpanderDetails"] * {
+    color: #F5F5F3 !important;
+}
 .login-card {
-    background: #F7F4EE;
+    background: #0F382E;
     border-radius: 20px;
     padding: 42px 38px;
-    box-shadow: 0 8px 30px rgba(61, 50, 38, 0.08);
-    border: 1.5px solid #E8C9A0;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+    border: 1.5px solid #D4AF37;
     max-width: 420px;
     margin: 0 auto;
 }
@@ -174,37 +246,145 @@ ul[data-baseweb="menu"] li:hover {
     font-family: 'Playfair Display', serif !important;
     font-weight: 800 !important;
     font-size: 1.9rem !important;
-    color: #8B6F47 !important;
+    color: #D4AF37 !important;
     text-align: center;
     margin-bottom: 6px;
 }
 .subtitle {
     text-align: center;
-    color: #5C4E3A !important;
+    color: #F5F5F3 !important;
     font-weight: 500 !important;
     font-size: 0.95rem;
     margin-bottom: 28px;
     opacity: 0.9;
 }
-
-/* Alerts, Dataframes, Dividers */
-div[data-testid="stAlert"] {
+div[data-testid="stAlert"],
+div[data-testid="stAlert"] > div {
+    border-radius: 12px;
+    background-color: #123F34 !important;
+    border: 1px solid #1A4A3C;
+    color: #F5F5F3 !important;
+}
+div[data-testid="stAlert"] * {
+    color: #F5F5F3 !important;
+}
+[data-testid="stDataFrame"],
+[data-testid="stDataFrame"] > div,
+[data-testid="stTable"] {
+    background: #0F382E !important;
     border-radius: 12px;
 }
-[data-testid="stDataFrame"] {
-    background: #F7F4EE !important;
-    border-radius: 12px;
+[data-testid="stTable"] th,
+[data-testid="stTable"] td {
+    background: #0F382E !important;
+    color: #F5F5F3 !important;
 }
 hr {
-    border-color: #E8C9A0 !important;
+    border-color: #1A4A3C !important;
 }
-
-/* Radio buttons */
-.stRadio label {
-    color: #3D3226 !important;
+.stRadio label, .stRadio label *,
+[data-testid="stRadio"] label, [data-testid="stRadio"] label * {
+    color: #F5F5F3 !important;
 }
-</style>
-""", unsafe_allow_html=True)
+[data-testid="stRadio"] [role="radiogroup"] label > div:first-child {
+    background-color: #0F382E !important;
+    border-color: #D4AF37 !important;
+}
+/* ========== BLUE INPUT BOXES ========== */
+input, textarea,
+.stTextInput input, .stTextArea textarea, .stNumberInput input,
+[data-testid="stDateInput"] input,
+[data-baseweb="input"], [data-baseweb="input"] > div,
+[data-baseweb="textarea"], [data-baseweb="textarea"] > div,
+[data-baseweb="base-input"] {
+    background-color: #1E3A5F !important;
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+    caret-color: #FFFFFF !important;
+    border-radius: 10px !important;
+}
+input, textarea {
+    border: 1px solid #3B82F6 !important;
+}
+[data-testid="stTextInput"] button,
+div[data-baseweb="input"] button {
+    background-color: #1E3A5F !important;
+    color: #93C5FD !important;
+    border: none !important;
+}
+[data-testid="stTextInput"] button svg,
+div[data-baseweb="input"] button svg {
+    fill: #93C5FD !important;
+    color: #93C5FD !important;
+}
+[data-testid="stDateInput"] svg {
+    fill: #93C5FD !important;
+}
+[data-testid="stNumberInput"] button {
+    background-color: #1E3A5F !important;
+    color: #93C5FD !important;
+    border: 1px solid #3B82F6 !important;
+}
+div[data-baseweb="select"],
+div[data-baseweb="select"] > div {
+    background-color: #1E3A5F !important;
+    color: #FFFFFF !important;
+    border: 1px solid #3B82F6 !important;
+}
+div[data-baseweb="select"] * {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+div[data-baseweb="popover"],
+div[data-baseweb="popover"] > div,
+div[data-baseweb="popover"] ul,
+div[data-baseweb="popover"] [role="listbox"],
+div[data-baseweb="popover"] [role="option"],
+div[data-baseweb="popover"] li,
+ul[data-baseweb="menu"],
+ul[data-baseweb="menu"] li,
+ul[data-baseweb="menu"] li * {
+    background-color: #1E3A5F !important;
+    color: #FFFFFF !important;
+}
+div[data-baseweb="popover"] [role="option"]:hover,
+div[data-baseweb="popover"] li:hover,
+ul[data-baseweb="menu"] li:hover {
+    background-color: #2563EB !important;
+}
+div[data-baseweb="calendar"],
+div[data-baseweb="calendar"] * {
+    background-color: #1E3A5F !important;
+    color: #FFFFFF !important;
+}
+div[data-baseweb="calendar"] [aria-selected="true"],
+div[data-baseweb="calendar"] [aria-selected="true"] * {
+    background-color: #2563EB !important;
+    color: #FFFFFF !important;
+}
+[data-testid="stDataFrame"],
+[data-testid="stDataFrame"] > div {
+    background-color: #1E3A5F !important;
+    border: 1px solid #3B82F6;
+}
+::placeholder,
+input::placeholder, textarea::placeholder {
+    color: #93C5FD !important;
+    -webkit-text-fill-color: #93C5FD !important;
+    opacity: 0.8 !important;
+}
+@media (max-width: 768px) {
+    .login-card { padding: 28px 20px; margin: 0 8px; }
+    .main-title { font-size: 1.5rem !important; }
+}
+iframe {
+    color-scheme: normal;
+}
+"""
+# Remove blank lines / indentation so Streamlit's markdown parser can never
+# break out of the <style> block and print the CSS as visible text.
+_CSS = "\n".join(line.strip() for line in _RAW_CSS.splitlines() if line.strip())
+st.markdown("<style>" + _CSS + "</style>", unsafe_allow_html=True)
 
 # ==========================================================
 # 4. CREDENTIALS (40 Parents + Admin)
@@ -214,7 +394,6 @@ def _h(pw: str) -> str:
 
 USERS = {
     "admin": {"password": _h("Admin@2015"), "role": "admin"},
-    # Multi-child parents
     "vijay.sethupathi":   {"password": _h("Vijay@2017"),   "role": "parent"},
     "nayanthara.nair":    {"password": _h("Nayan@2018"),    "role": "parent"},
     "suriya.sivakumar":   {"password": _h("Suriya@2016"),   "role": "parent"},
@@ -224,7 +403,6 @@ USERS = {
     "sivakarthikeyan.s":  {"password": _h("SK@2018"),       "role": "parent"},
     "trisha.krishnan":    {"password": _h("Trisha@2015"),   "role": "parent"},
     "karthi.sivakumar":   {"password": _h("Karthi@2019"),   "role": "parent"},
-    # Single-child parents
     "aishwarya.rajesh":   {"password": _h("Aishwarya@2021"), "role": "parent"},
     "jayam.ravi":         {"password": _h("Jayam@2016"),     "role": "parent"},
     "samantha.ruth":      {"password": _h("Samantha@2017"),  "role": "parent"},
@@ -296,23 +474,60 @@ CREATE TABLE IF NOT EXISTS buses (
 )
 """)
 
+conn.execute("""
+CREATE TABLE IF NOT EXISTS students (
+    admission_no TEXT PRIMARY KEY,
+    student_name TEXT,
+    bus_no TEXT,
+    pickup_point TEXT,
+    parent_username TEXT,
+    grade TEXT
+)
+""")
+
+conn.execute("""
+CREATE TABLE IF NOT EXISTS leave_requests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    admission_no TEXT,
+    student_name TEXT,
+    bus_no TEXT,
+    leave_date TEXT,
+    reason TEXT,
+    parent_username TEXT,
+    status TEXT
+)
+""")
+
+conn.execute("""
+CREATE TABLE IF NOT EXISTS route_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    admission_no TEXT,
+    student_name TEXT,
+    bus_no TEXT,
+    description TEXT,
+    parent_username TEXT,
+    report_status TEXT
+)
+""")
+conn.commit()
+
 # ==========================================================
 # 7. SEED DATA
 # ==========================================================
 def seed_data():
     buses = [
-        ("TN09AB1001", "Murugan S",     "R-01", "Kaithi Route",       12.9249, 80.1000, 32, "Moving"),
-        ("TN09CD1002", "Selvam K",      "R-02", "Vikram Trail",       12.9516, 80.1462, 28, "Moving"),
-        ("TN09EF1003", "Ravi Chandran", "R-03", "Master Path",        12.9675, 80.1491,  0, "Stopped"),
-        ("TN09GH1004", "Anand Babu",    "R-04", "Beast Circuit",      12.9172, 80.1320, 35, "Moving"),
-        ("TN09IJ1005", "Karthikeyan M", "R-05", "Jailer Expressway",  12.9200, 80.1900, 30, "Moving"),
-        ("TN09KL1006", "Senthil Kumar", "R-06", "Leo Route",          12.9000, 80.2270, 22, "Moving"),
-        ("TN09MN1007", "Prabhu D",      "R-07", "Soorarai Pottru",    12.9750, 80.2200,  0, "Stopped"),
-        ("TN09OP1008", "Ganesh R",      "R-08", "Vettaiya Boulevard", 13.0100, 80.2100, 27, "Moving"),
-        ("TN09QR1009", "Vignesh P",     "R-09", "Thalapathy Line",    13.0060, 80.2570, 25, "Moving"),
-        ("TN09ST1010", "Muthuvel A",    "R-10", "Thanga Magan Way",   13.0400, 80.2340, 18, "Moving"),
-        ("TN09UV1011", "Suresh Babu",   "R-11", "Ponniyin Selvan",    13.0850, 80.2100,  0, "Stopped"),
-        ("TN09WX1012", "Balaji N",      "R-12", "Indian 2 Link",      13.0380, 80.1560, 33, "Moving"),
+        ("TN09AB1001", "Murugan S",     "R-01", "Kaithi Route",        12.9249, 80.1000, 32, "Moving"),
+        ("TN09CD1002", "Selvam K",      "R-02", "Vikram Trail",        12.9516, 80.1462, 28, "Moving"),
+        ("TN09EF1003", "Ravi Chandran", "R-03", "Master Path",         12.9675, 80.1491,  0, "Stopped"),
+        ("TN09GH1004", "Anand Babu",    "R-04", "Beast Circuit",       12.9172, 80.1320, 35, "Moving"),
+        ("TN09IJ1005", "Karthikeyan M", "R-05", "Jailer Expressway",   12.9200, 80.1900, 30, "Moving"),
+        ("TN09KL1006", "Senthil Kumar", "R-06", "Leo Route",           12.9000, 80.2270, 22, "Moving"),
+        ("TN09MN1007", "Prabhu D",      "R-07", "Soorarai Pottru",     12.9750, 80.2200,  0, "Stopped"),
+        ("TN09OP1008", "Ganesh R",      "R-08", "Vettaiya Boulevard",  13.0100, 80.2100, 27, "Moving"),
+        ("TN09QR1009", "Vignesh P",     "R-09", "Thalapathy Line",     13.0060, 80.2570, 25, "Moving"),
+        ("TN09ST1010", "Muthuvel A",    "R-10", "Thanga Magan Way",    13.0400, 80.2340, 18, "Moving"),
+        ("TN09UV1011", "Suresh Babu",   "R-11", "Ponniyin Selvan",     13.0850, 80.2100,  0, "Stopped"),
+        ("TN09WX1012", "Balaji N",      "R-12", "Indian 2 Link",       13.0380, 80.1560, 33, "Moving"),
     ]
     for b in buses:
         conn.execute("INSERT OR IGNORE INTO buses VALUES (?,?,?,?,?,?,?,?)", b)
@@ -449,7 +664,7 @@ if not st.session_state.logged_in:
 # ==========================================================
 st.sidebar.markdown("### MAV Tracker")
 st.sidebar.write(f"**{st.session_state.username}**")
-st.sidebar.write(f"Role: {st.session_state.role.upper()}")
+st.sidebar.write(f"Role: {str(st.session_state.role).upper()}")
 st.sidebar.divider()
 if st.sidebar.button("Logout", use_container_width=True):
     for k in list(st.session_state.keys()):
@@ -466,7 +681,7 @@ if st.session_state.role == "parent":
     if children_df.empty:
         st.warning("No students are linked to this parent account.")
         st.stop()
-    
+
     options = [
         f"{row['student_name']}  (Adm: {row['admission_no']}  •  {row['grade']})"
         for _, row in children_df.iterrows()
@@ -479,7 +694,7 @@ if st.session_state.role == "parent":
     bus_number    = student_row["bus_no"]
     pickup_point  = student_row["pickup_point"]
     grade         = student_row["grade"]
-    
+
     bus = get_bus_details(bus_number)
     if not bus:
         st.error("Assigned bus information is currently unavailable.")
@@ -501,12 +716,12 @@ if st.session_state.role == "parent":
     c3.metric("Driver", driver)
     c4.metric("Speed", f"{speed} km/h")
     st.write(f"**Route:** {route_no} – {route_name}")
-    
+
     if bus_no not in st.session_state.eta_by_bus:
         st.session_state.eta_by_bus[bus_no] = random.randint(5, 20)
     eta = st.session_state.eta_by_bus[bus_no]
     st.info(f"Estimated Arrival: **{eta} minutes**")
-    
+
     st.subheader("Bus Location")
     m = folium.Map(location=[lat, lon], zoom_start=14, tiles="OpenStreetMap")
     folium.Marker(
@@ -516,7 +731,7 @@ if st.session_state.role == "parent":
         icon=folium.Icon(color="green" if status == "Moving" else "red", icon="bus", prefix="fa")
     ).add_to(m)
     st_folium(m, width=None, height=420, key="parent_bus_map")
-    
+
     st.markdown("---")
     with st.expander("Report Wrong Route", expanded=False):
         st.warning("Use this only if you notice a possible route problem.")
@@ -531,15 +746,18 @@ if st.session_state.role == "parent":
             if not route_description.strip():
                 st.warning("Please describe the issue.")
             else:
-                conn.execute("""
-                    INSERT INTO route_reports
-                    (admission_no, student_name, bus_no, description, parent_username, report_status)
-                    VALUES (?, ?, ?, ?, ?, ?)
-                """, (admission, student_name, bus_no, route_description.strip(),
-                      st.session_state.username, "New"))
-                conn.commit()
-                st.success("Route report submitted successfully.")
-                
+                try:
+                    conn.execute("""
+                        INSERT INTO route_reports
+                        (admission_no, student_name, bus_no, description, parent_username, report_status)
+                        VALUES (?, ?, ?, ?, ?, ?)
+                    """, (admission, student_name, bus_no, route_description.strip(),
+                          st.session_state.username, "New"))
+                    conn.commit()
+                    st.success("Route report submitted successfully.")
+                except Exception as e:
+                    st.error(f"Could not submit report: {e}")
+
     st.divider()
     st.subheader("Bus Leave Application")
     with st.form("bus_leave_form"):
@@ -553,7 +771,7 @@ if st.session_state.role == "parent":
         st.caption("Re-enter your account password to confirm this request.")
         verify_password = st.text_input("Re-enter password", type="password", key="leave_pwd")
         leave_submit = st.form_submit_button("Submit Leave", use_container_width=True)
-        
+
     if leave_submit:
         expected = USERS.get(st.session_state.username, {}).get("password")
         if not verify_password or _h(verify_password) != expected:
@@ -562,30 +780,36 @@ if st.session_state.role == "parent":
             final_reason = leave_reason
             if additional_reason.strip():
                 final_reason += " – " + additional_reason.strip()
-            exists = conn.execute("""
-                SELECT COUNT(*) FROM leave_requests
-                WHERE admission_no = ? AND leave_date = ?
-            """, (admission, leave_date.isoformat())).fetchone()[0]
-            if exists:
-                st.warning("A leave request already exists for this date.")
-            else:
-                conn.execute("""
-                    INSERT INTO leave_requests
-                    (admission_no, student_name, bus_no, leave_date, reason, parent_username, status)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                """, (admission, student_name, bus_no, leave_date.isoformat(),
-                      final_reason, st.session_state.username, "Pending"))
-                conn.commit()
-                st.success("Leave application submitted.")
-                
+            try:
+                exists = conn.execute("""
+                    SELECT COUNT(*) FROM leave_requests
+                    WHERE admission_no = ? AND leave_date = ?
+                """, (admission, leave_date.isoformat())).fetchone()[0]
+                if exists:
+                    st.warning("A leave request already exists for this date.")
+                else:
+                    conn.execute("""
+                        INSERT INTO leave_requests
+                        (admission_no, student_name, bus_no, leave_date, reason, parent_username, status)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """, (admission, student_name, bus_no, leave_date.isoformat(),
+                          final_reason, st.session_state.username, "Pending"))
+                    conn.commit()
+                    st.success("Leave application submitted.")
+            except Exception as e:
+                st.error(f"Could not submit leave: {e}")
+
     st.divider()
     st.subheader("Your Leave History")
-    leave_history = pd.read_sql_query("""
-        SELECT leave_date, reason, status
-        FROM leave_requests
-        WHERE admission_no = ?
-        ORDER BY leave_date DESC
-    """, conn, params=(admission,))
+    try:
+        leave_history = pd.read_sql_query("""
+            SELECT leave_date, reason, status
+            FROM leave_requests
+            WHERE admission_no = ?
+            ORDER BY leave_date DESC
+        """, conn, params=(admission,))
+    except Exception:
+        leave_history = pd.DataFrame(columns=["leave_date", "reason", "status"])
     if not leave_history.empty:
         st.dataframe(leave_history, use_container_width=True, hide_index=True)
     else:
@@ -602,7 +826,7 @@ elif st.session_state.role == "admin":
         ["Dashboard", "Track Bus", "Bus Management", "Student Management", "Notifications"]
     )
     df = get_buses()
-    
+
     if page == "Dashboard":
         st.subheader("Fleet Overview")
         total_buses = len(df)
@@ -614,16 +838,16 @@ elif st.session_state.role == "admin":
         new_reports = conn.execute(
             "SELECT COUNT(*) FROM route_reports WHERE report_status = 'New'"
         ).fetchone()[0]
-        
+
         c1, c2, c3 = st.columns(3)
         c1.metric("Total Buses", total_buses)
         c2.metric("Moving", moving)
         c3.metric("Stopped", stopped)
-        
+
         c4, c5 = st.columns(2)
         c4.metric("Pending Leaves", pending_leaves)
         c5.metric("New Route Alerts", new_reports)
-        
+
         st.divider()
         st.subheader("All Buses")
         if not df.empty:
@@ -631,7 +855,7 @@ elif st.session_state.role == "admin":
             st.bar_chart(df["status"].value_counts())
         else:
             st.info("No buses found.")
-            
+
         st.divider()
         st.subheader("Fleet Map")
         if not df.empty:
@@ -647,7 +871,7 @@ elif st.session_state.role == "admin":
                     )
                 ).add_to(m)
             st_folium(m, width=None, height=470, key="admin_fleet_map")
-            
+
     elif page == "Track Bus":
         st.subheader("Track & Simulate")
         if df.empty:
@@ -664,18 +888,18 @@ elif st.session_state.role == "admin":
                 c3.metric("Driver", driver)
                 c4.metric("Speed", f"{speed} km/h")
                 st.write(f"**Route:** {route_no} – {route_name}")
-                
+
                 if bus_no not in st.session_state.eta_by_bus:
                     st.session_state.eta_by_bus[bus_no] = random.randint(5, 20)
                 st.info(f"ETA: {st.session_state.eta_by_bus[bus_no]} minutes")
-                
+
                 m = folium.Map(location=[lat, lon], zoom_start=14)
                 folium.Marker(
                     [lat, lon], popup=bus_no,
                     icon=folium.Icon(color="green" if status == "Moving" else "red", icon="bus", prefix="fa")
                 ).add_to(m)
                 st_folium(m, width=None, height=420, key="admin_single_bus_map")
-                
+
                 if st.button("Simulate Movement", use_container_width=True):
                     new_lat = lat + random.uniform(-0.002, 0.002)
                     new_lon = lon + random.uniform(-0.002, 0.002)
@@ -687,11 +911,11 @@ elif st.session_state.role == "admin":
                     conn.commit()
                     st.success("Location updated.")
                     st.rerun()
-                    
+
     elif page == "Bus Management":
         st.subheader("Bus Management")
         t1, t2, t3 = st.tabs(["Add Bus", "Update Bus", "Delete Bus"])
-        
+
         with t1:
             with st.form("add_bus"):
                 nb = st.text_input("Bus Number")
@@ -701,20 +925,20 @@ elif st.session_state.role == "admin":
                 nlat = st.number_input("Latitude", value=12.9350, format="%.6f")
                 nlon = st.number_input("Longitude", value=80.1300, format="%.6f")
                 submitted = st.form_submit_button("Add Bus")
-                if submitted:
-                    if nb.strip() and nd.strip() and rno.strip() and rname.strip():
-                        try:
-                            conn.execute(
-                                "INSERT INTO buses (bus_no, driver, route_no, route_name, latitude, longitude, speed, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                                (nb.strip(), nd.strip(), rno.strip(), rname.strip(), nlat, nlon, 0, "Stopped")
-                            )
-                            conn.commit()
-                            st.success(f"Bus {nb} added successfully!")
-                            st.rerun()
-                        except Exception as e:
-                            st.error(f"Error adding bus: {e}")
-                    else:
-                        st.warning("Please fill in all required fields.")
+            if submitted:
+                if nb.strip() and nd.strip() and rno.strip() and rname.strip():
+                    try:
+                        conn.execute(
+                            "INSERT INTO buses (bus_no, driver, route_no, route_name, latitude, longitude, speed, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                            (nb.strip(), nd.strip(), rno.strip(), rname.strip(), nlat, nlon, 0, "Stopped")
+                        )
+                        conn.commit()
+                        st.success(f"Bus {nb} added successfully!")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Error adding bus: {e}")
+                else:
+                    st.warning("Please fill in all required fields.")
 
         with t2:
             buses_list = df["bus_no"].tolist() if not df.empty else []
@@ -727,66 +951,84 @@ elif st.session_state.role == "admin":
                         new_driver = st.text_input("Driver Name", value=cur_driver)
                         new_rno = st.text_input("Route Number", value=cur_rno)
                         new_rname = st.text_input("Route Name", value=cur_rname)
-                        new_status = st.selectbox("Status", ["Moving", "Stopped"], index=0 if cur_status == "Moving" else 1)
-                        update_submitted = st.form_submit_button("Update Bus")
-                        if update_submitted:
-                            conn.execute("""
-                                UPDATE buses SET driver=?, route_no=?, route_name=?, status=? WHERE bus_no=?
-                            """, (new_driver, new_rno, new_rname, new_status, up_bus))
-                            conn.commit()
-                            st.success(f"Bus {up_bus} updated successfully!")
-                            st.rerun()
+                        new_status = st.selectbox(
+                            "Status", ["Moving", "Stopped"],
+                            index=0 if cur_status == "Moving" else 1
+                        )
+                        update_sub = st.form_submit_button("Update Bus")
+                    if update_sub:
+                        conn.execute("""
+                            UPDATE buses SET driver=?, route_no=?, route_name=?, status=?
+                            WHERE bus_no=?
+                        """, (new_driver, new_rno, new_rname, new_status, up_bus))
+                        conn.commit()
+                        st.success("Bus updated successfully.")
+                        st.rerun()
+            else:
+                st.info("No buses available to update.")
 
         with t3:
-            buses_list = df["bus_no"].tolist() if not df.empty else []
-            if buses_list:
-                del_bus = st.selectbox("Select Bus to Delete", buses_list, key="delete_bus_select")
-                if st.button("Delete Bus", type="primary"):
+            del_list = df["bus_no"].tolist() if not df.empty else []
+            if del_list:
+                del_bus = st.selectbox("Select Bus to Delete", del_list, key="delete_bus_select")
+                if st.button("Delete Selected Bus", use_container_width=True):
                     conn.execute("DELETE FROM buses WHERE bus_no = ?", (del_bus,))
                     conn.commit()
-                    st.success(f"Bus {del_bus} deleted successfully!")
+                    st.success(f"Bus {del_bus} deleted.")
                     st.rerun()
+            else:
+                st.info("No buses available to delete.")
 
     elif page == "Student Management":
-        st.subheader("Student Directory")
+        st.subheader("Student Roster")
         students_df = get_students()
         if not students_df.empty:
             st.dataframe(students_df, use_container_width=True, hide_index=True)
         else:
-            st.info("No students registered.")
+            st.info("No student records found.")
 
     elif page == "Notifications":
-        st.subheader("Parent Requests & Reports")
-        st.markdown("### Pending Leave Applications")
-        leaves_df = pd.read_sql_query("SELECT * FROM leave_requests WHERE status = 'Pending'", conn)
-        if not leaves_df.empty:
-            for _, row in leaves_df.iterrows():
-                st.write(f"**Student:** {row['student_name']} (Adm: {row['admission_no']}) | **Date:** {row['leave_date']} | **Reason:** {row['reason']}")
-                col1, col2 = st.columns(2)
-                if col1.button("Approve", key=f"approve_leave_{row['leave_id']}"):
-                    conn.execute("UPDATE leave_requests SET status = 'Approved' WHERE leave_id = ?", (row['leave_id'],))
+        st.subheader("Leave Requests & Route Reports")
+        tab_l, tab_r = st.tabs(["Leave Requests", "Route Reports"])
+
+        with tab_l:
+            leaves_df = pd.read_sql_query(
+                "SELECT id, admission_no, student_name, bus_no, leave_date, reason, status FROM leave_requests ORDER BY id DESC",
+                conn
+            )
+            if not leaves_df.empty:
+                st.dataframe(leaves_df, use_container_width=True, hide_index=True)
+                selected_leave_id = st.number_input(
+                    "Leave Request ID to Action", min_value=1, step=1, key="leave_id_input"
+                )
+                c1, c2 = st.columns(2)
+                if c1.button("Approve Leave"):
+                    conn.execute("UPDATE leave_requests SET status = 'Approved' WHERE id = ?", (int(selected_leave_id),))
                     conn.commit()
                     st.success("Leave approved.")
                     st.rerun()
-                if col2.button("Reject", key=f"reject_leave_{row['leave_id']}"):
-                    conn.execute("UPDATE leave_requests SET status = 'Rejected' WHERE leave_id = ?", (row['leave_id'],))
+                if c2.button("Reject Leave"):
+                    conn.execute("UPDATE leave_requests SET status = 'Rejected' WHERE id = ?", (int(selected_leave_id),))
                     conn.commit()
                     st.warning("Leave rejected.")
                     st.rerun()
-                st.divider()
-        else:
-            st.info("No pending leave requests.")
-            
-        st.markdown("### Route Issue Reports")
-        reports_df = pd.read_sql_query("SELECT * FROM route_reports WHERE report_status = 'New'", conn)
-        if not reports_df.empty:
-            for _, row in reports_df.iterrows():
-                st.write(f"**Bus:** {row['bus_no']} | **Student:** {row['student_name']} | **Description:** {row['description']}")
-                if st.button("Mark as Resolved", key=f"resolve_report_{row['report_id']}"):
-                    conn.execute("UPDATE route_reports SET report_status = 'Resolved' WHERE report_id = ?", (row['report_id'],))
+            else:
+                st.info("No leave requests found.")
+
+        with tab_r:
+            reports_df = pd.read_sql_query(
+                "SELECT id, admission_no, student_name, bus_no, description, report_status FROM route_reports ORDER BY id DESC",
+                conn
+            )
+            if not reports_df.empty:
+                st.dataframe(reports_df, use_container_width=True, hide_index=True)
+                selected_rep_id = st.number_input(
+                    "Report ID to Resolve", min_value=1, step=1, key="rep_id_input"
+                )
+                if st.button("Mark Resolved"):
+                    conn.execute("UPDATE route_reports SET report_status = 'Resolved' WHERE id = ?", (int(selected_rep_id),))
                     conn.commit()
                     st.success("Report marked as resolved.")
                     st.rerun()
-                st.divider()
-        else:
-            st.info("No active route reports.")
+            else:
+                st.info("No route reports found.")
