@@ -291,6 +291,93 @@ hr {
     background-color: #0F382E !important;
     border-color: #D4AF37 !important;
 }
+/* ========== BLUE INPUT BOXES ========== */
+input, textarea,
+.stTextInput input, .stTextArea textarea, .stNumberInput input,
+[data-testid="stDateInput"] input,
+[data-baseweb="input"], [data-baseweb="input"] > div,
+[data-baseweb="textarea"], [data-baseweb="textarea"] > div,
+[data-baseweb="base-input"] {
+    background-color: #1E3A5F !important;
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+    caret-color: #FFFFFF !important;
+    border-radius: 10px !important;
+}
+input, textarea {
+    border: 1px solid #3B82F6 !important;
+}
+[data-testid="stTextInput"] button,
+div[data-baseweb="input"] button {
+    background-color: #1E3A5F !important;
+    color: #93C5FD !important;
+    border: none !important;
+}
+[data-testid="stTextInput"] button svg,
+div[data-baseweb="input"] button svg {
+    fill: #93C5FD !important;
+    color: #93C5FD !important;
+}
+[data-testid="stDateInput"] svg {
+    fill: #93C5FD !important;
+}
+[data-testid="stNumberInput"] button {
+    background-color: #1E3A5F !important;
+    color: #93C5FD !important;
+    border: 1px solid #3B82F6 !important;
+}
+div[data-baseweb="select"],
+div[data-baseweb="select"] > div {
+    background-color: #1E3A5F !important;
+    color: #FFFFFF !important;
+    border: 1px solid #3B82F6 !important;
+}
+div[data-baseweb="select"] * {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+div[data-baseweb="popover"],
+div[data-baseweb="popover"] > div,
+div[data-baseweb="popover"] ul,
+div[data-baseweb="popover"] [role="listbox"],
+div[data-baseweb="popover"] [role="option"],
+div[data-baseweb="popover"] li,
+ul[data-baseweb="menu"],
+ul[data-baseweb="menu"] li,
+ul[data-baseweb="menu"] li * {
+    background-color: #1E3A5F !important;
+    color: #FFFFFF !important;
+}
+div[data-baseweb="popover"] [role="option"]:hover,
+div[data-baseweb="popover"] li:hover,
+ul[data-baseweb="menu"] li:hover {
+    background-color: #2563EB !important;
+}
+div[data-baseweb="calendar"],
+div[data-baseweb="calendar"] * {
+    background-color: #1E3A5F !important;
+    color: #FFFFFF !important;
+}
+div[data-baseweb="calendar"] [aria-selected="true"],
+div[data-baseweb="calendar"] [aria-selected="true"] * {
+    background-color: #2563EB !important;
+    color: #FFFFFF !important;
+}
+[data-testid="stDataFrame"],
+[data-testid="stDataFrame"] > div {
+    background-color: #1E3A5F !important;
+    border: 1px solid #3B82F6;
+}
+::placeholder,
+input::placeholder, textarea::placeholder {
+    color: #93C5FD !important;
+    -webkit-text-fill-color: #93C5FD !important;
+    opacity: 0.8 !important;
+}
+@media (max-width: 768px) {
+    .login-card { padding: 28px 20px; margin: 0 8px; }
+    .main-title { font-size: 1.5rem !important; }
+}
 iframe {
     color-scheme: normal;
 }
