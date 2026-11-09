@@ -360,7 +360,9 @@ conn.commit()
 # ==========================================================
 # 7. FORCE UPDATE ROUTE NAMES
 # ==========================================================
-def seed_data():
+def seed_data():     
+    conn.execute("DELETE FROM buses")     
+    conn.commit()
     conn.execute("DELETE FROM buses")
     conn.commit()
 
