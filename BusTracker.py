@@ -22,35 +22,60 @@ st.set_page_config(
 # 2. DATABASE
 # ==========================================================
 DB_PATH = Path(__file__).resolve().parent / "bus_tracking.db"
-conn = sqlite3.connect(str(DB_PATH), check_same_thread=False)
+conn = sqlite3.connect(str(DB_PATH), check_same_thread=False, timeout=30)
 
 # ==========================================================
-# 3. THEME - Blue boxes
+# 3. DARK LUXURY THEME (works on phone light/dark mode too)
 # ==========================================================
 st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+:root, html, body {
+    color-scheme: dark !important;
+}
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif !important;
+    background-color: #0B1312 !important;
+    color: #F5F5F3 !important;
 }
-.stApp {
-    background-color: #0B1312;
-    color: #F5F5F3;
+.stApp,
+[data-testid="stApp"],
+[data-testid="stAppViewContainer"],
+[data-testid="stMain"],
+[data-testid="stMainBlockContainer"],
+.main, .block-container {
+    background-color: #0B1312 !important;
+    color: #F5F5F3 !important;
 }
-[data-testid="stHeader"] {
-    background: #0B1312;
+[data-testid="stHeader"],
+[data-testid="stToolbar"],
+[data-testid="stBottom"],
+[data-testid="stBottomBlockContainer"] {
+    background: #0B1312 !important;
+    color: #F5F5F3 !important;
 }
-h1, h2, h3, h4 {
+[data-testid="stHeader"] button,
+[data-testid="stHeader"] svg,
+[data-testid="stSidebarCollapseButton"] button,
+[data-testid="stExpandSidebarButton"] button,
+[data-testid="stSidebarCollapsedControl"] button {
+    color: #F5F5F3 !important;
+    fill: #F5F5F3 !important;
+}
+h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif !important;
     font-weight: 700 !important;
     color: #F5F5F3 !important;
+    letter-spacing: 0.3px;
 }
-p, label, span, li, .stMarkdown, .stCaption {
+p, label, span, li, div, small,
+.stMarkdown, .stCaption, [data-testid="stCaptionContainer"],
+[data-testid="stMarkdownContainer"] {
     color: #F5F5F3 !important;
 }
-
-/* Sidebar */
-section[data-testid="stSidebar"] {
+section[data-testid="stSidebar"],
+section[data-testid="stSidebar"] > div,
+[data-testid="stSidebarContent"] {
     background-color: #0F382E !important;
 }
 section[data-testid="stSidebar"] * {
@@ -63,26 +88,31 @@ section[data-testid="stSidebar"] .stButton > button {
     font-weight: 700 !important;
     border: none !important;
 }
-
-/* Metrics */
+section[data-testid="stSidebar"] .stButton > button * {
+    color: #0B1312 !important;
+}
 div[data-testid="stMetric"] {
-    background: #0F382E;
+    background: #0F382E !important;
     border: 1px solid #D4AF37;
     border-radius: 14px;
     padding: 16px;
 }
-div[data-testid="stMetric"] label {
+div[data-testid="stMetric"] label,
+div[data-testid="stMetric"] label * {
     color: #D4AF37 !important;
     font-weight: 600 !important;
 }
-div[data-testid="stMetric"] [data-testid="stMetricValue"] {
+div[data-testid="stMetric"] [data-testid="stMetricValue"],
+div[data-testid="stMetric"] [data-testid="stMetricValue"] * {
     color: #F5F5F3 !important;
     font-weight: 700 !important;
 }
-
-/* Buttons */
 .stButton > button,
-.stFormSubmitButton > button {
+.stFormSubmitButton > button,
+[data-testid="stBaseButton-secondary"],
+[data-testid="stBaseButton-secondaryFormSubmit"],
+[data-testid="stBaseButton-primary"],
+[data-testid="stBaseButton-primaryFormSubmit"] {
     background: #D4AF37 !important;
     color: #0B1312 !important;
     border: none !important;
@@ -90,120 +120,120 @@ div[data-testid="stMetric"] [data-testid="stMetricValue"] {
     font-weight: 700 !important;
     padding: 10px 20px !important;
 }
+.stButton > button *,
+.stFormSubmitButton > button * {
+    color: #0B1312 !important;
+}
 .stButton > button:hover,
 .stFormSubmitButton > button:hover {
     background: #E8C547 !important;
     color: #0B1312 !important;
 }
-
-/* ========== BLUE INPUT BOXES ========== */
 input, textarea,
-.stTextInput input,
-.stTextArea textarea,
-.stNumberInput input,
-[data-testid="stDateInput"] input {
-    background-color: #1E3A5F !important;
-    color: #FFFFFF !important;
-    border-radius: 10px !important;
-    border: 1px solid #3B82F6 !important;
-}
-
-/* Password eye icon */
-[data-testid="stTextInput"] button,
-div[data-baseweb="input"] button {
-    background-color: #1E3A5F !important;
-    color: #93C5FD !important;
-    border: none !important;
-}
-[data-testid="stTextInput"] button svg,
-div[data-baseweb="input"] button svg {
-    fill: #93C5FD !important;
-    color: #93C5FD !important;
-}
-
-/* Date input */
-[data-testid="stDateInput"] input,
-[data-testid="stDateInput"] div[data-baseweb="input"] {
-    background-color: #1E3A5F !important;
-    color: #FFFFFF !important;
-    border: 1px solid #3B82F6 !important;
+.stTextInput input, .stTextArea textarea, .stNumberInput input, .stDateInput input,
+[data-baseweb="input"], [data-baseweb="input"] > div,
+[data-baseweb="textarea"], [data-baseweb="textarea"] > div,
+[data-baseweb="base-input"] {
+    background-color: #0F382E !important;
+    color: #F5F5F3 !important;
+    -webkit-text-fill-color: #F5F5F3 !important;
+    caret-color: #F5F5F3 !important;
     border-radius: 10px !important;
 }
-[data-testid="stDateInput"] svg {
-    fill: #93C5FD !important;
+input, textarea {
+    border: 1px solid #D4AF37 !important;
 }
-
-/* Number input buttons */
+input::placeholder, textarea::placeholder {
+    color: #B9C4BF !important;
+    -webkit-text-fill-color: #B9C4BF !important;
+    opacity: 1 !important;
+}
 [data-testid="stNumberInput"] button {
-    background-color: #1E3A5F !important;
-    color: #93C5FD !important;
-    border: 1px solid #3B82F6 !important;
+    background-color: #0F382E !important;
+    color: #F5F5F3 !important;
 }
-
-/* Selectbox */
+div[data-baseweb="select"],
 div[data-baseweb="select"] > div {
-    background-color: #1E3A5F !important;
-    color: #FFFFFF !important;
-    border: 1px solid #3B82F6 !important;
+    background-color: #0F382E !important;
+    color: #F5F5F3 !important;
 }
 div[data-baseweb="select"] * {
-    color: #FFFFFF !important;
+    color: #F5F5F3 !important;
+    -webkit-text-fill-color: #F5F5F3 !important;
 }
+div[data-baseweb="select"] svg {
+    fill: #F5F5F3 !important;
+}
+div[data-baseweb="popover"],
+div[data-baseweb="popover"] > div,
+div[data-baseweb="popover"] ul,
+div[data-baseweb="popover"] [role="listbox"],
+div[data-baseweb="popover"] [role="option"],
+div[data-baseweb="popover"] li,
 ul[data-baseweb="menu"] {
-    background-color: #1E3A5F !important;
+    background-color: #0F382E !important;
+    color: #F5F5F3 !important;
 }
+div[data-baseweb="popover"] *,
 ul[data-baseweb="menu"] li,
 ul[data-baseweb="menu"] li * {
-    background-color: #1E3A5F !important;
-    color: #FFFFFF !important;
+    color: #F5F5F3 !important;
 }
+div[data-baseweb="popover"] [role="option"]:hover,
+div[data-baseweb="popover"] li:hover,
 ul[data-baseweb="menu"] li:hover {
-    background-color: #2563EB !important;
+    background-color: #1A4A3C !important;
 }
-
-/* Labels */
+div[data-baseweb="calendar"],
+div[data-baseweb="calendar"] * {
+    background-color: #0F382E !important;
+    color: #F5F5F3 !important;
+}
+div[data-baseweb="calendar"] [aria-selected="true"],
+div[data-baseweb="calendar"] [aria-selected="true"] * {
+    background-color: #D4AF37 !important;
+    color: #0B1312 !important;
+}
 [data-testid="stTextInput"] label,
 [data-testid="stTextArea"] label,
 [data-testid="stNumberInput"] label,
 [data-testid="stSelectbox"] label,
 [data-testid="stDateInput"] label,
-[data-testid="stRadio"] label {
+[data-testid="stTextInput"] label *,
+[data-testid="stTextArea"] label *,
+[data-testid="stNumberInput"] label *,
+[data-testid="stSelectbox"] label *,
+[data-testid="stDateInput"] label * {
     color: #D4AF37 !important;
     font-weight: 600 !important;
 }
-
-/* Tabs */
-[data-testid="stTabs"] button {
+[data-testid="stTabs"] button,
+[data-testid="stTabs"] button * {
     color: #F5F5F3 !important;
     font-weight: 600 !important;
+    background: transparent !important;
 }
-
-/* Dataframe */
-[data-testid="stDataFrame"],
-[data-testid="stDataFrame"] > div,
-[data-testid="stDataFrame"] table,
-[data-testid="stDataFrame"] th,
-[data-testid="stDataFrame"] td {
-    background-color: #1E3A5F !important;
-    color: #FFFFFF !important;
-    border-color: #3B82F6 !important;
+[data-testid="stTabs"] [role="tablist"] {
+    border-bottom: 1px solid #1A4A3C;
 }
-[data-testid="stDataFrame"] th {
-    color: #93C5FD !important;
-    font-weight: 600 !important;
+[data-testid="stForm"] {
+    background-color: #0F382E !important;
+    border: 1px solid #D4AF37 !important;
+    border-radius: 14px !important;
 }
-
-/* Placeholder */
-::placeholder {
-    color: #93C5FD !important;
-    opacity: 0.8 !important;
+[data-testid="stExpander"],
+[data-testid="stExpander"] details,
+[data-testid="stExpander"] summary,
+[data-testid="stExpanderDetails"] {
+    background-color: #0F382E !important;
+    color: #F5F5F3 !important;
+    border-color: #D4AF37 !important;
+    border-radius: 12px !important;
 }
-input::placeholder,
-textarea::placeholder {
-    color: #93C5FD !important;
+[data-testid="stExpander"] summary *,
+[data-testid="stExpanderDetails"] * {
+    color: #F5F5F3 !important;
 }
-
-/* Login card */
 .login-card {
     background: #0F382E;
     border-radius: 20px;
@@ -227,24 +257,48 @@ textarea::placeholder {
     font-weight: 500 !important;
     font-size: 0.95rem;
     margin-bottom: 28px;
+    opacity: 0.9;
+}
+div[data-testid="stAlert"],
+div[data-testid="stAlert"] > div {
+    border-radius: 12px;
+    background-color: #123F34 !important;
+    border: 1px solid #1A4A3C;
+    color: #F5F5F3 !important;
+}
+div[data-testid="stAlert"] * {
+    color: #F5F5F3 !important;
+}
+[data-testid="stDataFrame"],
+[data-testid="stDataFrame"] > div,
+[data-testid="stTable"] {
+    background: #0F382E !important;
+    border-radius: 12px;
+}
+[data-testid="stTable"] th,
+[data-testid="stTable"] td {
+    background: #0F382E !important;
+    color: #F5F5F3 !important;
 }
 hr {
-    border-color: #1A4A3C;
+    border-color: #1A4A3C !important;
 }
-@media (max-width: 768px) {
-    .login-card {
-        padding: 28px 20px;
-        margin: 0 8px;
-    }
-    .main-title {
-        font-size: 1.5rem !important;
-    }
+.stRadio label, .stRadio label *,
+[data-testid="stRadio"] label, [data-testid="stRadio"] label * {
+    color: #F5F5F3 !important;
+}
+[data-testid="stRadio"] [role="radiogroup"] label > div:first-child {
+    background-color: #0F382E !important;
+    border-color: #D4AF37 !important;
+}
+iframe {
+    color-scheme: normal;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # ==========================================================
-# 4. CREDENTIALS
+# 4. CREDENTIALS (40 Parents + Admin)
 # ==========================================================
 def _h(pw: str) -> str:
     return hashlib.sha256(pw.encode()).hexdigest()
@@ -254,43 +308,43 @@ USERS = {
     "vijay.sethupathi":   {"password": _h("Vijay@2017"),   "role": "parent"},
     "nayanthara.nair":    {"password": _h("Nayan@2018"),    "role": "parent"},
     "suriya.sivakumar":   {"password": _h("Suriya@2016"),   "role": "parent"},
-    "keerthy.suresh":     {"password": _h("Keerthy@2019"),  "role": "parent"},
-    "dhanush.r":          {"password": _h("Dhanush@2017"),  "role": "parent"},
+    "keerthy.suresh":     {"password": _h("Keerthy@2019"), "role": "parent"},
+    "dhanush.r":          {"password": _h("Dhanush@2017"), "role": "parent"},
     "sai.pallavi":        {"password": _h("Sai@2020"),      "role": "parent"},
     "sivakarthikeyan.s":  {"password": _h("SK@2018"),       "role": "parent"},
     "trisha.krishnan":    {"password": _h("Trisha@2015"),   "role": "parent"},
     "karthi.sivakumar":   {"password": _h("Karthi@2019"),   "role": "parent"},
-    "aishwarya.rajesh":   {"password": _h("Aishwarya@2021"),"role": "parent"},
-    "jayam.ravi":         {"password": _h("Jayam@2016"),    "role": "parent"},
-    "samantha.ruth":      {"password": _h("Samantha@2017"), "role": "parent"},
-    "vikram.prabhu":      {"password": _h("Vikram@2020"),   "role": "parent"},
-    "raashi.khanna":      {"password": _h("Raashi@2022"),   "role": "parent"},
-    "arya.t":             {"password": _h("Arya@2018"),     "role": "parent"},
-    "pooja.hegde":        {"password": _h("Pooja@2021"),    "role": "parent"},
-    "simbu.t":            {"password": _h("Simbu@2015"),    "role": "parent"},
-    "kalyani.priyadarshan":{"password": _h("Kalyani@2023"), "role": "parent"},
-    "madhavan.r":         {"password": _h("Maddy@2014"),    "role": "parent"},
-    "nivetha.thomas":     {"password": _h("Nivetha@2019"),  "role": "parent"},
-    "vishal.krishna":     {"password": _h("Vishal@2016"),   "role": "parent"},
-    "amala.paul":         {"password": _h("Amala@2020"),    "role": "parent"},
-    "atharvaa.murali":    {"password": _h("Atharvaa@2022"), "role": "parent"},
-    "priya.bhavani":      {"password": _h("Priya@2021"),    "role": "parent"},
-    "gv.prakash":         {"password": _h("GV@2017"),       "role": "parent"},
-    "anandhi.s":          {"password": _h("Anandhi@2018"),  "role": "parent"},
-    "hiphop.tamizha":     {"password": _h("Hiphop@2019"),   "role": "parent"},
-    "bindu.madhavi":      {"password": _h("Bindu@2020"),    "role": "parent"},
-    "sundeep.kishan":     {"password": _h("Sundeep@2022"),  "role": "parent"},
-    "regina.cassandra":   {"password": _h("Regina@2016"),   "role": "parent"},
-    "harish.kalyan":      {"password": _h("Harish@2021"),   "role": "parent"},
-    "raiza.wilson":       {"password": _h("Raiza@2023"),    "role": "parent"},
-    "ashok.selvan":       {"password": _h("Ashok@2018"),    "role": "parent"},
-    "andrea.jeremiah":    {"password": _h("Andrea@2015"),   "role": "parent"},
-    "bobby.simha":        {"password": _h("Bobby@2017"),    "role": "parent"},
-    "tanya.ravichandran": {"password": _h("Tanya@2020"),    "role": "parent"},
-    "rj.balaji":          {"password": _h("RJ@2019"),       "role": "parent"},
-    "nithya.menen":       {"password": _h("Nithya@2016"),   "role": "parent"},
-    "siddharth.s":        {"password": _h("Sid@2014"),      "role": "parent"},
-    "amal.paul":          {"password": _h("Amal@2022"),     "role": "parent"},
+    "aishwarya.rajesh":   {"password": _h("Aishwarya@2021"), "role": "parent"},
+    "jayam.ravi":         {"password": _h("Jayam@2016"),     "role": "parent"},
+    "samantha.ruth":      {"password": _h("Samantha@2017"),  "role": "parent"},
+    "vikram.prabhu":      {"password": _h("Vikram@2020"),    "role": "parent"},
+    "raashi.khanna":      {"password": _h("Raashi@2022"),    "role": "parent"},
+    "arya.t":             {"password": _h("Arya@2018"),      "role": "parent"},
+    "pooja.hegde":        {"password": _h("Pooja@2021"),     "role": "parent"},
+    "simbu.t":            {"password": _h("Simbu@2015"),     "role": "parent"},
+    "kalyani.priyadarshan":{"password": _h("Kalyani@2023"),  "role": "parent"},
+    "madhavan.r":         {"password": _h("Maddy@2014"),     "role": "parent"},
+    "nivetha.thomas":     {"password": _h("Nivetha@2019"),   "role": "parent"},
+    "vishal.krishna":     {"password": _h("Vishal@2016"),    "role": "parent"},
+    "amala.paul":         {"password": _h("Amala@2020"),     "role": "parent"},
+    "atharvaa.murali":    {"password": _h("Atharvaa@2022"),  "role": "parent"},
+    "priya.bhavani":      {"password": _h("Priya@2021"),     "role": "parent"},
+    "gv.prakash":         {"password": _h("GV@2017"),        "role": "parent"},
+    "anandhi.s":          {"password": _h("Anandhi@2018"),   "role": "parent"},
+    "hiphop.tamizha":     {"password": _h("Hiphop@2019"),    "role": "parent"},
+    "bindu.madhavi":      {"password": _h("Bindu@2020"),     "role": "parent"},
+    "sundeep.kishan":     {"password": _h("Sundeep@2022"),   "role": "parent"},
+    "regina.cassandra":   {"password": _h("Regina@2016"),    "role": "parent"},
+    "harish.kalyan":      {"password": _h("Harish@2021"),    "role": "parent"},
+    "raiza.wilson":       {"password": _h("Raiza@2023"),     "role": "parent"},
+    "ashok.selvan":       {"password": _h("Ashok@2018"),     "role": "parent"},
+    "andrea.jeremiah":    {"password": _h("Andrea@2015"),    "role": "parent"},
+    "bobby.simha":        {"password": _h("Bobby@2017"),     "role": "parent"},
+    "tanya.ravichandran": {"password": _h("Tanya@2020"),     "role": "parent"},
+    "rj.balaji":          {"password": _h("RJ@2019"),        "role": "parent"},
+    "nithya.menen":       {"password": _h("Nithya@2016"),    "role": "parent"},
+    "siddharth.s":        {"password": _h("Sid@2014"),       "role": "parent"},
+    "amal.paul":          {"password": _h("Amal@2022"),      "role": "parent"},
 }
 
 # ==========================================================
@@ -308,8 +362,16 @@ for key, value in defaults.items():
         st.session_state[key] = value
 
 # ==========================================================
-# 6. DATABASE TABLES
+# 6. DATABASE TABLES SETUP
 # ==========================================================
+try:
+    b_cols = [r[1] for r in conn.execute("PRAGMA table_info(buses)").fetchall()]
+    if len(b_cols) > 0 and len(b_cols) != 8:
+        conn.execute("DROP TABLE buses")
+        conn.commit()
+except Exception:
+    pass
+
 conn.execute("""
 CREATE TABLE IF NOT EXISTS buses (
     bus_no TEXT PRIMARY KEY,
@@ -322,6 +384,7 @@ CREATE TABLE IF NOT EXISTS buses (
     status TEXT
 )
 """)
+
 conn.execute("""
 CREATE TABLE IF NOT EXISTS students (
     admission_no TEXT PRIMARY KEY,
@@ -332,6 +395,7 @@ CREATE TABLE IF NOT EXISTS students (
     grade TEXT
 )
 """)
+
 conn.execute("""
 CREATE TABLE IF NOT EXISTS leave_requests (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -344,6 +408,7 @@ CREATE TABLE IF NOT EXISTS leave_requests (
     status TEXT
 )
 """)
+
 conn.execute("""
 CREATE TABLE IF NOT EXISTS route_reports (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -358,30 +423,25 @@ CREATE TABLE IF NOT EXISTS route_reports (
 conn.commit()
 
 # ==========================================================
-# 7. FORCE UPDATE ROUTE NAMES
+# 7. SEED DATA
 # ==========================================================
-def seed_data():     
-    conn.execute("DELETE FROM buses")     
-    conn.commit()
-    conn.execute("DELETE FROM buses")
-    conn.commit()
-
+def seed_data():
     buses = [
-        ("TN09AB1001", "Murugan S",     "R-01", "Tambaram Route",       12.9249, 80.1000, 32, "Moving"),
-        ("TN09CD1002", "Selvam K",      "R-02", "Chromepet Route",      12.9516, 80.1462, 28, "Moving"),
-        ("TN09EF1003", "Ravi Chandran", "R-03", "Pallavaram Route",     12.9675, 80.1491,  0, "Stopped"),
-        ("TN09GH1004", "Anand Babu",    "R-04", "Selaiyur Route",       12.9172, 80.1320, 35, "Moving"),
-        ("TN09IJ1005", "Karthikeyan M", "R-05", "Medavakkam Route",     12.9200, 80.1900, 30, "Moving"),
-        ("TN09KL1006", "Senthil Kumar", "R-06", "Sholinganallur Route", 12.9000, 80.2270, 22, "Moving"),
-        ("TN09MN1007", "Prabhu D",      "R-07", "Velachery Route",      12.9750, 80.2200,  0, "Stopped"),
-        ("TN09OP1008", "Ganesh R",      "R-08", "Guindy Route",         13.0100, 80.2100, 27, "Moving"),
-        ("TN09QR1009", "Vignesh P",     "R-09", "Adyar Route",          13.0060, 80.2570, 25, "Moving"),
-        ("TN09ST1010", "Muthuvel A",    "R-10", "T Nagar Route",        13.0400, 80.2340, 18, "Moving"),
-        ("TN09UV1011", "Suresh Babu",   "R-11", "Anna Nagar Route",     13.0850, 80.2100,  0, "Stopped"),
-        ("TN09WX1012", "Balaji N",      "R-12", "Porur Route",          13.0380, 80.1560, 33, "Moving"),
+        ("TN09AB1001", "Murugan S",     "R-01", "Kaithi Route",        12.9249, 80.1000, 32, "Moving"),
+        ("TN09CD1002", "Selvam K",      "R-02", "Vikram Trail",        12.9516, 80.1462, 28, "Moving"),
+        ("TN09EF1003", "Ravi Chandran", "R-03", "Master Path",         12.9675, 80.1491,  0, "Stopped"),
+        ("TN09GH1004", "Anand Babu",    "R-04", "Beast Circuit",       12.9172, 80.1320, 35, "Moving"),
+        ("TN09IJ1005", "Karthikeyan M", "R-05", "Jailer Expressway",   12.9200, 80.1900, 30, "Moving"),
+        ("TN09KL1006", "Senthil Kumar", "R-06", "Leo Route",           12.9000, 80.2270, 22, "Moving"),
+        ("TN09MN1007", "Prabhu D",      "R-07", "Soorarai Pottru",     12.9750, 80.2200,  0, "Stopped"),
+        ("TN09OP1008", "Ganesh R",      "R-08", "Vettaiya Boulevard",  13.0100, 80.2100, 27, "Moving"),
+        ("TN09QR1009", "Vignesh P",     "R-09", "Thalapathy Line",     13.0060, 80.2570, 25, "Moving"),
+        ("TN09ST1010", "Muthuvel A",    "R-10", "Thanga Magan Way",    13.0400, 80.2340, 18, "Moving"),
+        ("TN09UV1011", "Suresh Babu",   "R-11", "Ponniyin Selvan",     13.0850, 80.2100,  0, "Stopped"),
+        ("TN09WX1012", "Balaji N",      "R-12", "Indian 2 Link",       13.0380, 80.1560, 33, "Moving"),
     ]
     for b in buses:
-        conn.execute("INSERT OR REPLACE INTO buses VALUES (?,?,?,?,?,?,?,?)", b)
+        conn.execute("INSERT OR IGNORE INTO buses VALUES (?,?,?,?,?,?,?,?)", b)
 
     students = [
         ("1001", "Aadhya Sethupathi",  "TN09AB1001", "Tambaram",       "vijay.sethupathi", "Class 5"),
@@ -479,7 +539,6 @@ if not st.session_state.logged_in:
         st.markdown('<div class="login-card">', unsafe_allow_html=True)
         st.markdown('<div class="main-title">MAV School Bus Tracker</div>', unsafe_allow_html=True)
         st.markdown('<div class="subtitle">Secure School Transportation Portal</div>', unsafe_allow_html=True)
-
         login_type = st.radio(
             "Portal",
             ["Parent Login", "Admin Login"],
@@ -488,7 +547,6 @@ if not st.session_state.logged_in:
         )
         username = st.text_input("Username", placeholder="e.g. vijay.sethupathi")
         password = st.text_input("Password", type="password", placeholder="Enter your password")
-
         if st.button("Sign In", use_container_width=True):
             username = username.strip().lower()
             user = USERS.get(username)
@@ -517,7 +575,7 @@ if not st.session_state.logged_in:
 # ==========================================================
 st.sidebar.markdown("### MAV Tracker")
 st.sidebar.write(f"**{st.session_state.username}**")
-st.sidebar.write(f"Role: {st.session_state.role.upper()}")
+st.sidebar.write(f"Role: {str(st.session_state.role).upper()}")
 st.sidebar.divider()
 if st.sidebar.button("Logout", use_container_width=True):
     for k in list(st.session_state.keys()):
@@ -530,7 +588,6 @@ if st.sidebar.button("Logout", use_container_width=True):
 if st.session_state.role == "parent":
     st.title("Parent Portal")
     st.caption("You can view and manage your linked children.")
-
     children_df = get_children_of_parent(st.session_state.username)
     if children_df.empty:
         st.warning("No students are linked to this parent account.")
@@ -543,7 +600,6 @@ if st.session_state.role == "parent":
     choice = st.selectbox("Select your child", options)
     selected_adm = choice.split("Adm: ")[1].split(" ")[0].strip()
     student_row = children_df[children_df["admission_no"] == selected_adm].iloc[0]
-
     admission     = student_row["admission_no"]
     student_name  = student_row["student_name"]
     bus_number    = student_row["bus_no"]
@@ -554,9 +610,7 @@ if st.session_state.role == "parent":
     if not bus:
         st.error("Assigned bus information is currently unavailable.")
         st.stop()
-
     bus_no, driver, route_no, route_name, lat, lon, speed, status = bus
-
     st.divider()
     st.subheader("Student Information")
     c1, c2, c3 = st.columns(3)
@@ -564,7 +618,6 @@ if st.session_state.role == "parent":
     c2.metric("Admission No", admission)
     c3.metric("Grade", grade)
     st.info(f"Pickup Point: **{pickup_point}**")
-
     st.divider()
     st.subheader("Assigned Bus")
     c1, c2 = st.columns(2)
@@ -600,11 +653,11 @@ if st.session_state.role == "parent":
                 height=110
             )
             report_submit = st.form_submit_button("Submit Report", use_container_width=True)
-
-            if report_submit:
-                if not route_description.strip():
-                    st.warning("Please describe the issue.")
-                else:
+        if report_submit:
+            if not route_description.strip():
+                st.warning("Please describe the issue.")
+            else:
+                try:
                     conn.execute("""
                         INSERT INTO route_reports
                         (admission_no, student_name, bus_no, description, parent_username, report_status)
@@ -613,6 +666,8 @@ if st.session_state.role == "parent":
                           st.session_state.username, "New"))
                     conn.commit()
                     st.success("Route report submitted successfully.")
+                except Exception as e:
+                    st.error(f"Could not submit report: {e}")
 
     st.divider()
     st.subheader("Bus Leave Application")
@@ -628,14 +683,15 @@ if st.session_state.role == "parent":
         verify_password = st.text_input("Re-enter password", type="password", key="leave_pwd")
         leave_submit = st.form_submit_button("Submit Leave", use_container_width=True)
 
-        if leave_submit:
-            expected = USERS.get(st.session_state.username, {}).get("password")
-            if not verify_password or _h(verify_password) != expected:
-                st.error("Password verification failed.")
-            else:
-                final_reason = leave_reason
-                if additional_reason.strip():
-                    final_reason += " – " + additional_reason.strip()
+    if leave_submit:
+        expected = USERS.get(st.session_state.username, {}).get("password")
+        if not verify_password or _h(verify_password) != expected:
+            st.error("Password verification failed.")
+        else:
+            final_reason = leave_reason
+            if additional_reason.strip():
+                final_reason += " – " + additional_reason.strip()
+            try:
                 exists = conn.execute("""
                     SELECT COUNT(*) FROM leave_requests
                     WHERE admission_no = ? AND leave_date = ?
@@ -651,15 +707,20 @@ if st.session_state.role == "parent":
                           final_reason, st.session_state.username, "Pending"))
                     conn.commit()
                     st.success("Leave application submitted.")
+            except Exception as e:
+                st.error(f"Could not submit leave: {e}")
 
     st.divider()
     st.subheader("Your Leave History")
-    leave_history = pd.read_sql_query("""
-        SELECT leave_date, reason, status
-        FROM leave_requests
-        WHERE admission_no = ?
-        ORDER BY leave_date DESC
-    """, conn, params=(admission,))
+    try:
+        leave_history = pd.read_sql_query("""
+            SELECT leave_date, reason, status
+            FROM leave_requests
+            WHERE admission_no = ?
+            ORDER BY leave_date DESC
+        """, conn, params=(admission,))
+    except Exception:
+        leave_history = pd.DataFrame(columns=["leave_date", "reason", "status"])
     if not leave_history.empty:
         st.dataframe(leave_history, use_container_width=True, hide_index=True)
     else:
@@ -671,7 +732,6 @@ if st.session_state.role == "parent":
 elif st.session_state.role == "admin":
     st.title("Admin Dashboard")
     st.caption("MAV School Transportation Management")
-
     page = st.sidebar.radio(
         "Navigation",
         ["Dashboard", "Track Bus", "Bus Management", "Student Management", "Notifications"]
@@ -776,20 +836,20 @@ elif st.session_state.role == "admin":
                 nlat = st.number_input("Latitude", value=12.9350, format="%.6f")
                 nlon = st.number_input("Longitude", value=80.1300, format="%.6f")
                 submitted = st.form_submit_button("Add Bus")
-                if submitted:
-                    if nb.strip() and nd.strip() and rno.strip() and rname.strip():
-                        try:
-                            conn.execute(
-                                "INSERT INTO buses (bus_no, driver, route_no, route_name, latitude, longitude, speed, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                                (nb.strip(), nd.strip(), rno.strip(), rname.strip(), nlat, nlon, 0, "Stopped")
-                            )
-                            conn.commit()
-                            st.success(f"Bus {nb} added successfully!")
-                            st.rerun()
-                        except Exception as e:
-                            st.error(f"Error adding bus: {e}")
-                    else:
-                        st.warning("Please fill in all required fields.")
+            if submitted:
+                if nb.strip() and nd.strip() and rno.strip() and rname.strip():
+                    try:
+                        conn.execute(
+                            "INSERT INTO buses (bus_no, driver, route_no, route_name, latitude, longitude, speed, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                            (nb.strip(), nd.strip(), rno.strip(), rname.strip(), nlat, nlon, 0, "Stopped")
+                        )
+                        conn.commit()
+                        st.success(f"Bus {nb} added successfully!")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Error adding bus: {e}")
+                else:
+                    st.warning("Please fill in all required fields.")
 
         with t2:
             buses_list = df["bus_no"].tolist() if not df.empty else []
@@ -802,16 +862,21 @@ elif st.session_state.role == "admin":
                         new_driver = st.text_input("Driver Name", value=cur_driver)
                         new_rno = st.text_input("Route Number", value=cur_rno)
                         new_rname = st.text_input("Route Name", value=cur_rname)
-                        new_status = st.selectbox("Status", ["Moving", "Stopped"], index=0 if cur_status == "Moving" else 1)
+                        new_status = st.selectbox(
+                            "Status", ["Moving", "Stopped"],
+                            index=0 if cur_status == "Moving" else 1
+                        )
                         update_sub = st.form_submit_button("Update Bus")
-                        if update_sub:
-                            conn.execute("""
-                                UPDATE buses SET driver=?, route_no=?, route_name=?, status=?
-                                WHERE bus_no=?
-                            """, (new_driver, new_rno, new_rname, new_status, up_bus))
-                            conn.commit()
-                            st.success("Bus updated successfully.")
-                            st.rerun()
+                    if update_sub:
+                        conn.execute("""
+                            UPDATE buses SET driver=?, route_no=?, route_name=?, status=?
+                            WHERE bus_no=?
+                        """, (new_driver, new_rno, new_rname, new_status, up_bus))
+                        conn.commit()
+                        st.success("Bus updated successfully.")
+                        st.rerun()
+            else:
+                st.info("No buses available to update.")
 
         with t3:
             del_list = df["bus_no"].tolist() if not df.empty else []
@@ -822,6 +887,8 @@ elif st.session_state.role == "admin":
                     conn.commit()
                     st.success(f"Bus {del_bus} deleted.")
                     st.rerun()
+            else:
+                st.info("No buses available to delete.")
 
     elif page == "Student Management":
         st.subheader("Student Roster")
@@ -842,15 +909,17 @@ elif st.session_state.role == "admin":
             )
             if not leaves_df.empty:
                 st.dataframe(leaves_df, use_container_width=True, hide_index=True)
-                selected_leave_id = st.number_input("Leave Request ID to Action", min_value=1, step=1, key="leave_id_input")
+                selected_leave_id = st.number_input(
+                    "Leave Request ID to Action", min_value=1, step=1, key="leave_id_input"
+                )
                 c1, c2 = st.columns(2)
                 if c1.button("Approve Leave"):
-                    conn.execute("UPDATE leave_requests SET status = 'Approved' WHERE id = ?", (selected_leave_id,))
+                    conn.execute("UPDATE leave_requests SET status = 'Approved' WHERE id = ?", (int(selected_leave_id),))
                     conn.commit()
                     st.success("Leave approved.")
                     st.rerun()
                 if c2.button("Reject Leave"):
-                    conn.execute("UPDATE leave_requests SET status = 'Rejected' WHERE id = ?", (selected_leave_id,))
+                    conn.execute("UPDATE leave_requests SET status = 'Rejected' WHERE id = ?", (int(selected_leave_id),))
                     conn.commit()
                     st.warning("Leave rejected.")
                     st.rerun()
@@ -864,9 +933,11 @@ elif st.session_state.role == "admin":
             )
             if not reports_df.empty:
                 st.dataframe(reports_df, use_container_width=True, hide_index=True)
-                selected_rep_id = st.number_input("Report ID to Resolve", min_value=1, step=1, key="rep_id_input")
+                selected_rep_id = st.number_input(
+                    "Report ID to Resolve", min_value=1, step=1, key="rep_id_input"
+                )
                 if st.button("Mark Resolved"):
-                    conn.execute("UPDATE route_reports SET report_status = 'Resolved' WHERE id = ?", (selected_rep_id,))
+                    conn.execute("UPDATE route_reports SET report_status = 'Resolved' WHERE id = ?", (int(selected_rep_id),))
                     conn.commit()
                     st.success("Report marked as resolved.")
                     st.rerun()
