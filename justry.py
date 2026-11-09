@@ -15,7 +15,7 @@ st.set_page_config(
     page_title="MAV School Bus Tracker",
     page_icon="🚌",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # ==========================================================
@@ -25,20 +25,21 @@ DB_PATH = Path(__file__).resolve().parent / "bus_tracking.db"
 conn = sqlite3.connect(str(DB_PATH), check_same_thread=False)
 
 # ==========================================================
-# 3. DARK LUXURY THEME
+# 3. DARK LUXURY THEME (WITH MOBILE WEBKIT OVERRIDES)
 # ==========================================================
 st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* Global Dark Theme */
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif !important;
 }
 .stApp {
-    background-color: #0B1312;
-    color: #F5F5F3;
+    background-color: #0B1312 !important;
+    color: #F5F5F3 !important;
 }
 [data-testid="stHeader"] {
-    background: #0B1312;
+    background: #0B1312 !important;
 }
 h1, h2, h3, h4 {
     font-family: 'Playfair Display', serif !important;
@@ -49,6 +50,8 @@ h1, h2, h3, h4 {
 p, label, span, li, .stMarkdown, .stCaption {
     color: #F5F5F3 !important;
 }
+
+/* Sidebar Fixes for Mobile */
 section[data-testid="stSidebar"] {
     background-color: #0F382E !important;
 }
@@ -62,11 +65,13 @@ section[data-testid="stSidebar"] .stButton > button {
     font-weight: 700 !important;
     border: none !important;
 }
+
+/* Metrics Fixes */
 div[data-testid="stMetric"] {
-    background: #0F382E;
-    border: 1px solid #D4AF37;
-    border-radius: 14px;
-    padding: 16px;
+    background: #0F382E !important;
+    border: 1px solid #D4AF37 !important;
+    border-radius: 14px !important;
+    padding: 16px !important;
 }
 div[data-testid="stMetric"] label {
     color: #D4AF37 !important;
@@ -76,6 +81,8 @@ div[data-testid="stMetric"] [data-testid="stMetricValue"] {
     color: #F5F5F3 !important;
     font-weight: 700 !important;
 }
+
+/* Button Fixes */
 .stButton > button,
 .stFormSubmitButton > button {
     background: #D4AF37 !important;
@@ -90,33 +97,69 @@ div[data-testid="stMetric"] [data-testid="stMetricValue"] {
     background: #E8C547 !important;
     color: #0B1312 !important;
 }
-input, textarea, .stTextInput input, .stTextArea textarea {
+
+/* Mobile Input, Textarea, and Select Overrides */
+input, textarea, select, 
+.stTextInput input, 
+.stTextArea textarea,
+.stDateInput input,
+[data-baseweb="input"] input {
     background-color: #0F382E !important;
     color: #F5F5F3 !important;
+    -webkit-text-fill-color: #F5F5F3 !important;
     border-radius: 10px !important;
     border: 1px solid #D4AF37 !important;
+    opacity: 1 !important;
 }
+
+/* Placeholders Visibility Fix */
+::placeholder,
+::-webkit-input-placeholder {
+    color: #A0B2AC !important;
+    -webkit-text-fill-color: #A0B2AC !important;
+    opacity: 1 !important;
+}
+
+/* Password Eye Icon & Native SVG Controls Fix */
+button[aria-label="Show password"],
+button[aria-label="Hide password"],
+svg[data-icon="eye"],
+svg[data-icon="eye-slash"] {
+    fill: #D4AF37 !important;
+    color: #D4AF37 !important;
+    filter: drop-shadow(0 0 1px #D4AF37);
+}
+
+/* Selectbox Dropdown Fixes for Mobile */
 div[data-baseweb="select"] {
     background-color: #0F382E !important;
+    border-radius: 10px !important;
 }
 div[data-baseweb="select"] > div {
     background-color: #0F382E !important;
     color: #F5F5F3 !important;
+    border: 1px solid #D4AF37 !important;
+    border-radius: 10px !important;
 }
 div[data-baseweb="select"] * {
     color: #F5F5F3 !important;
+    -webkit-text-fill-color: #F5F5F3 !important;
 }
 ul[data-baseweb="menu"] {
     background-color: #0F382E !important;
+    border: 1px solid #D4AF37 !important;
 }
 ul[data-baseweb="menu"] li,
 ul[data-baseweb="menu"] li * {
     background-color: #0F382E !important;
     color: #F5F5F3 !important;
+    -webkit-text-fill-color: #F5F5F3 !important;
 }
 ul[data-baseweb="menu"] li:hover {
     background-color: #1A4A3C !important;
 }
+
+/* Labels Fix */
 [data-testid="stTextInput"] label,
 [data-testid="stTextArea"] label,
 [data-testid="stNumberInput"] label,
@@ -125,14 +168,35 @@ ul[data-baseweb="menu"] li:hover {
     color: #D4AF37 !important;
     font-weight: 600 !important;
 }
-[data-testid="stTabs"] button {
+
+/* Mobile Alert Cards (st.info, st.warning, st.error, st.success) */
+div[data-testid="stAlert"] {
+    background-color: #0F382E !important;
+    border: 1px solid #D4AF37 !important;
+    border-radius: 12px !important;
     color: #F5F5F3 !important;
-    font-weight: 600 !important;
 }
+div[data-testid="stAlert"] * {
+    color: #F5F5F3 !important;
+    -webkit-text-fill-color: #F5F5F3 !important;
+}
+
+/* Expander Header & Content Mobile Overrides */
+div[data-testid="stExpander"] {
+    background-color: #0F382E !important;
+    border: 1px solid #D4AF37 !important;
+    border-radius: 12px !important;
+}
+div[data-testid="stExpander"] * {
+    color: #F5F5F3 !important;
+    -webkit-text-fill-color: #F5F5F3 !important;
+}
+
+/* Card & Login Layout */
 .login-card {
-    background: #0F382E;
+    background: #0F382E !important;
     border-radius: 20px;
-    padding: 42px 38px;
+    padding: 30px 24px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.55);
     border: 1.5px solid #D4AF37;
     max-width: 420px;
@@ -141,7 +205,7 @@ ul[data-baseweb="menu"] li:hover {
 .main-title {
     font-family: 'Playfair Display', serif !important;
     font-weight: 800 !important;
-    font-size: 1.9rem !important;
+    font-size: 1.8rem !important;
     color: #D4AF37 !important;
     text-align: center;
     margin-bottom: 6px;
@@ -151,18 +215,15 @@ ul[data-baseweb="menu"] li:hover {
     color: #F5F5F3 !important;
     font-weight: 500 !important;
     font-size: 0.95rem;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
     opacity: 0.9;
 }
-div[data-testid="stAlert"] {
-    border-radius: 12px;
-}
 [data-testid="stDataFrame"] {
-    background: #0F382E;
+    background: #0F382E !important;
     border-radius: 12px;
 }
 hr {
-    border-color: #1A4A3C;
+    border-color: #1A4A3C !important;
 }
 .stRadio label {
     color: #F5F5F3 !important;
@@ -178,7 +239,6 @@ def _h(pw: str) -> str:
 
 USERS = {
     "admin": {"password": _h("Admin@2015"), "role": "admin"},
-    # Multi-child parents (Parents with 2-3 children)
     "vijay.sethupathi":   {"password": _h("Vijay@2017"),   "role": "parent"},
     "nayanthara.nair":    {"password": _h("Nayan@2018"),    "role": "parent"},
     "suriya.sivakumar":   {"password": _h("Suriya@2016"),   "role": "parent"},
@@ -188,7 +248,6 @@ USERS = {
     "sivakarthikeyan.s":  {"password": _h("SK@2018"),       "role": "parent"},
     "trisha.krishnan":    {"password": _h("Trisha@2015"),   "role": "parent"},
     "karthi.sivakumar":   {"password": _h("Karthi@2019"),   "role": "parent"},
-    # Single-child parents (Remaining up to 40 total parents)
     "aishwarya.rajesh":   {"password": _h("Aishwarya@2021"), "role": "parent"},
     "jayam.ravi":         {"password": _h("Jayam@2016"),     "role": "parent"},
     "samantha.ruth":      {"password": _h("Samantha@2017"),  "role": "parent"},
@@ -409,7 +468,7 @@ def get_children_of_parent(username):
 # 9. LOGIN PAGE
 # ==========================================================
 if not st.session_state.logged_in:
-    left, center, right = st.columns([1.35, 2.3, 1.35])
+    left, center, right = st.columns([1, 8, 1])
     with center:
         st.markdown('<div class="login-card">', unsafe_allow_html=True)
         st.markdown('<div class="main-title">MAV School Bus Tracker</div>', unsafe_allow_html=True)
@@ -468,12 +527,13 @@ if st.session_state.role == "parent":
         st.warning("No students are linked to this parent account.")
         st.stop()
     
+    # Cleaned label formatting to prevent truncation on mobile screen width
     options = [
-        f"{row['student_name']}  (Adm: {row['admission_no']}  •  {row['grade']})"
+        f"{row['student_name']} ({row['admission_no']} - {row['grade']})"
         for _, row in children_df.iterrows()
     ]
     choice = st.selectbox("Select your child", options)
-    selected_adm = choice.split("Adm: ")[1].split(" ")[0].strip()
+    selected_adm = choice.split("(")[1].split(" -")[0].strip()
     student_row = children_df[children_df["admission_no"] == selected_adm].iloc[0]
     admission     = student_row["admission_no"]
     student_name  = student_row["student_name"]
@@ -519,7 +579,7 @@ if st.session_state.role == "parent":
     ).add_to(m)
     st_folium(m, width=None, height=420, key="parent_bus_map")
     
-    # Wrong Route under map
+    # Wrong Route Report
     st.markdown("---")
     with st.expander("Report Wrong Route", expanded=False):
         st.warning("Use this only if you notice a possible route problem.")
@@ -809,8 +869,7 @@ elif st.session_state.role == "admin":
                         st.rerun()
                     if col2.button(f"Reject {row['leave_id']}", key=f"rej_{row['leave_id']}"):
                         conn.execute("UPDATE leave_requests SET status = 'Rejected' WHERE leave_id = ?", (row['leave_id'],))
-                        conn.commit()
-                        st.warning("Leave rejected.")
+                        conn.warning("Leave rejected.")
                         st.rerun()
                     st.divider()
         else:
