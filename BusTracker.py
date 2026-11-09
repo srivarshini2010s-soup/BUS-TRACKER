@@ -25,7 +25,7 @@ DB_PATH = Path(__file__).resolve().parent / "bus_tracking.db"
 conn = sqlite3.connect(str(DB_PATH), check_same_thread=False)
 
 # ==========================================================
-# 3. THEME (Blue boxes for clear visibility)
+# 3. THEME - Blue boxes
 # ==========================================================
 st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -96,13 +96,13 @@ div[data-testid="stMetric"] [data-testid="stMetricValue"] {
     color: #0B1312 !important;
 }
 
-/* ========== BLUE INPUT BOXES (fixes white text issue) ========== */
+/* ========== BLUE INPUT BOXES ========== */
 input, textarea,
 .stTextInput input,
 .stTextArea textarea,
 .stNumberInput input,
 [data-testid="stDateInput"] input {
-    background-color: #1E3A5F !important;   /* Blue */
+    background-color: #1E3A5F !important;
     color: #FFFFFF !important;
     border-radius: 10px !important;
     border: 1px solid #3B82F6 !important;
@@ -178,7 +178,7 @@ ul[data-baseweb="menu"] li:hover {
     font-weight: 600 !important;
 }
 
-/* Dataframe / Leave History */
+/* Dataframe */
 [data-testid="stDataFrame"],
 [data-testid="stDataFrame"] > div,
 [data-testid="stDataFrame"] table,
@@ -201,11 +201,6 @@ ul[data-baseweb="menu"] li:hover {
 input::placeholder,
 textarea::placeholder {
     color: #93C5FD !important;
-}
-
-/* Alerts */
-div[data-testid="stAlert"] {
-    border-radius: 12px;
 }
 
 /* Login card */
@@ -258,7 +253,7 @@ USERS = {
     "admin": {"password": _h("Admin@2015"), "role": "admin"},
     "vijay.sethupathi":   {"password": _h("Vijay@2017"),   "role": "parent"},
     "nayanthara.nair":    {"password": _h("Nayan@2018"),    "role": "parent"},
-    "suriya.sivakumar":   {"password": _h("S repuriya@2016"),   "role": "parent"},
+    "suriya.sivakumar":   {"password": _h("Suriya@2016"),   "role": "parent"},
     "keerthy.suresh":     {"password": _h("Keerthy@2019"),  "role": "parent"},
     "dhanush.r":          {"password": _h("Dhanush@2017"),  "role": "parent"},
     "sai.pallavi":        {"password": _h("Sai@2020"),      "role": "parent"},
@@ -363,10 +358,9 @@ CREATE TABLE IF NOT EXISTS route_reports (
 conn.commit()
 
 # ==========================================================
-# 7. FORCE UPDATE ROUTE NAMES + SEED DATA
+# 7. FORCE UPDATE ROUTE NAMES
 # ==========================================================
 def seed_data():
-    # Clear old bus data so new names are applied
     conn.execute("DELETE FROM buses")
     conn.commit()
 
