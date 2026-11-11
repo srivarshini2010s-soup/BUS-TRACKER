@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import sqlite3
 import folium 
-
+import random
 import hashlib
 from pathlib import Path
 from datetime import date
